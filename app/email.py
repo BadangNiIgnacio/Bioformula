@@ -20,7 +20,7 @@ def send_registration_success_email(firstname, email, id):
     recipient_list = [email]
     html_message = '<h4>Hi ' + firstname + '</h4>'
     html_message += '<p>Welcome to BioFarmula, Please validate your account with the link provided below:</p>'
-    html_message += "<p><a href='http://localhost:8000/validation/" + str(id) + "'>Click here to validate your account</a></p>"
+    html_message += "<p><a href='http://tempbioformula.pythonanywhere.com//validation/" + str(id) + "'>Click here to validate your account</a></p>"
     send_mail(subject, message, from_email, recipient_list, html_message=html_message)
 
 
