@@ -4,7 +4,7 @@
 {% block choose %}
 <div class="choose_section layout_padding">
     <div class="container">
-        <h1 class="choose_taital">My Profile</h1>
+        <h1 class="choose_taital" id="profile">My Profile</h1>
         <form action="{% url 'profile' id %}" method="POST" enctype="multipart/form-data">
             {%include 'app/messages.html'%}
             {% csrf_token %}

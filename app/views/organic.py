@@ -27,7 +27,7 @@ def fertilizer(request):
                 result = FertilizersIngredients.objects.filter(
                     Q(fertilizer__name__icontains=search) | Q(fertilizer__description__icontains=search) | Q(description__icontains=search)
                 )
-                paginator = Paginator(result, 20)
+                paginator = Paginator(result, 10)
                 page_number = request.GET.get('page')
                 page_obj = paginator.get_page(page_number)
                 form = FertilizerSearchForm()
@@ -37,7 +37,7 @@ def fertilizer(request):
         except Exception as e:
             messages.error(request, str(e))
     fertilizer = Fertilizers.objects.filter(status=True).annotate(max_rating=Max('fertilizerfeedback__rating')).order_by('-max_rating')
-    paginator = Paginator(fertilizer, 20)
+    paginator = Paginator(fertilizer, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     form = FertilizerSearchForm()
@@ -87,7 +87,7 @@ def pesticide(request):
                 result = PesticideIngredients.objects.filter(
                     Q(pesticide__name__icontains=search) | Q(pesticide__description__icontains=search) | Q(description__icontains=search)
                 )
-                paginator = Paginator(result, 20)
+                paginator = Paginator(result, 10)
                 page_number = request.GET.get('page')
                 page_obj = paginator.get_page(page_number)
                 form = PesticideSearchForm()
@@ -97,7 +97,7 @@ def pesticide(request):
         except Exception as e:
             messages.error(request, str(e))
     pesticide = Pesticides.objects.filter(status=True).annotate(max_rating=Max('pesticidefeedback__rating')).order_by('-max_rating')
-    paginator = Paginator(pesticide, 20)
+    paginator = Paginator(pesticide, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     form = PesticideSearchForm()

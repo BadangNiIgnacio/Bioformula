@@ -49,8 +49,8 @@ class ProfileForm(forms.Form):
     lastname = forms.CharField(max_length=150, label='Last Name', validators=[alphanumeric_with_hyphen], widget=forms.TextInput(attrs={'class': 'form-control'}))
     suffix = forms.CharField(max_length=150, label='Extension', validators=[alphanumeric_with_hyphen], required=False, widget=forms.TextInput(attrs={'class': 'form-control'}))
     email = forms.EmailField(label='Email', required=True, widget=forms.EmailInput(attrs={'class': 'form-control', 'readonly': 'readonly'}))
-    civil_status = forms.ChoiceField(label='Civil Status', choices=CS, widget=forms.Select(attrs={'class': 'form-control'}))
-    gender = forms.ChoiceField(label='Gender', choices=GENDER, widget=forms.Select(attrs={'class': 'form-control'}))
+    civil_status = forms.ChoiceField(label='Civil Status', choices=CS, widget=forms.Select(attrs={'class': 'form-control w-100'}))
+    gender = forms.ChoiceField(label='Gender', choices=GENDER, widget=forms.Select(attrs={'class': 'form-control w-100'}))
     occupation = forms.CharField(max_length=150, label='Occupation', required=False, widget=forms.TextInput(attrs={'class': 'form-control'}))
     address = forms.CharField(max_length=250, label='Address', required=False, widget=forms.TextInput(attrs={'class': 'form-control'}))
     # contact_no = forms.CharField(max_length=30, label='Contact No.', required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
@@ -77,14 +77,11 @@ class ReservationForm(forms.Form):
     event_type = forms.CharField(label='Event Type', max_length=150, widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 4}))
     start = forms.DateField(label='Start Date', widget=forms.DateInput(attrs={'class': 'form-control datepicker'}))
     end = forms.DateField(label='End Date', widget=forms.DateInput(attrs={'class': 'form-control datepicker'}))
-    duration = forms.CharField(label='Duration', widget=forms.TextInput(attrs={'class': 'form-control'}))
 
 class ReservationDetailsForm(forms.Form):
     event_type = forms.CharField(label='Event Type', max_length=150, widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 4}))
     start = forms.DateField(label='Start Date', widget=forms.DateInput(attrs={'class': 'form-control datepicker'}))
     end = forms.DateField(label='End Date', widget=forms.DateInput(attrs={'class': 'form-control datepicker'}))
-    duration = forms.CharField(label='Duration', widget=forms.TextInput(attrs={'class': 'form-control'}))
-    notes = forms.CharField(label='Notes', widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 4}))
     status = forms.ChoiceField(label='Status', choices=RESERVATION_STATUS, widget=forms.Select())
 
 class PesticideConversionForm(forms.ModelForm):

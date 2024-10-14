@@ -61,7 +61,6 @@ def reservation_details(request, id):
                     'event_type'        : i.event_type,
                     'start'             : i.start,
                     'end'               : i.end,
-                    'duration'          : i.duration,
                     'notes'             : i.notes,
                     'status'            : i.status,
                 }
@@ -85,9 +84,8 @@ def add(request):
                 event_type = form.cleaned_data['event_type']
                 start = form.cleaned_data['start']
                 end = form.cleaned_data['end']
-                duration = form.cleaned_data['duration']
                 with transaction.atomic():
-                    reserve = Appointments(user_id=request.session['userid'], event_type=event_type, start=start, end=end, duration=duration, date_created=timezone.now())
+                    reserve = Appointments(user_id=request.session['userid'], event_type=event_type, start=start, end=end, date_created=timezone.now())
                     reserve.save()
                     if reserve.appointment_id:
                         messages.success(request, "Reservation Created, We will send you an email with regards to the status of your reservation")

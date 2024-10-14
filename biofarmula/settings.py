@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-m1#$(k+e=hhf#-=2s-7b+l!e*h@y%hx$w18g)(magmojgjqo1&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['tempBioFormula.pythonanywhere.com']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
