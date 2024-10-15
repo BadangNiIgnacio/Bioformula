@@ -36,3 +36,23 @@ def appointment_emails(sender, instance, **kwargs):
         send_reservation_cancelled(customer_name, customer_email, event_type, start, end, duration, notes, contact_email, contact_phone, farm_name, website_url)
     elif status == 'PENDING':
         send_reservation_pending(customer_name, customer_email, event_type, start, end, duration, notes, contact_email, contact_phone, farm_name, website_url)
+
+@receiver(post_save, sender=Announcement)
+def appointment_emails(sender, instance, **kwargs):
+    subject = instance.subject
+    body = instance.body
+    #to be define
+    contact_email = "biofarmula3@gmail.com"
+    contact_phone = "(054) 881-1033"
+    farm_name = "BioFarmula"
+    website_url = "www.Biofarmula.com"
+    user = User.objects.all()
+    try:
+        for i in user:
+            customer_name = i.first_name + " " + i.last_name
+            customer_email = i.email
+            send_annoucement(subject, body, customer_email, customer_name)
+    except:
+        customer_name = ""
+        customer_email
+        pass

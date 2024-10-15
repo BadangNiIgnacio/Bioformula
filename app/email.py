@@ -153,3 +153,19 @@ def send_certificate(name, email, inclusive_date, details, signatory):
     email = EmailMultiAlternatives(subject, plain_message, from_email, [to])
     email.attach_alternative(html_message, "text/html")
     email.send()
+
+
+def send_annoucement(subject, body, email, name):
+    html_message = render_to_string('app/emails/annoucement.html', {
+        'name': name,
+        'subject': subject,    
+        'body': body,
+    })
+
+    plain_message = strip_tags(html_message)
+    from_email = 'biofarmula3@gmail.com'
+    to = email
+
+    email = EmailMultiAlternatives(subject, plain_message, from_email, [to])
+    email.attach_alternative(html_message, "text/html")
+    email.send()

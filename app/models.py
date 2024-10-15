@@ -88,6 +88,33 @@ class PesticideSource(models.Model):
     link = models.CharField(max_length=250, null=True, blank=True)
     status = models.BooleanField(default=True)
 
+class PesticideBenefit(models.Model):
+    benefit_id = models.UUIDField(primary_key=True, editable=False, unique=True, default=uuid.uuid4)
+    pesticide = models.ForeignKey(Pesticides, on_delete=RESTRICT)
+    benefit = models.CharField(max_length=100, null=True, blank=True)
+    status = models.BooleanField(default=True)
+
+    class Meta:
+        verbose_name_plural = "Benefits"
+
+class PesticideNotes(models.Model):
+    notes_id = models.UUIDField(primary_key=True, editable=False, unique=True, default=uuid.uuid4)
+    pesticide = models.ForeignKey(Pesticides, on_delete=RESTRICT)
+    notes = models.CharField(max_length=100, null=True, blank=True)
+    status = models.BooleanField(default=True)
+
+    class Meta:
+        verbose_name_plural = "Notes"
+
+class PesticideUsage(models.Model):
+    usage_id = models.UUIDField(primary_key=True, editable=False, unique=True, default=uuid.uuid4)
+    pesticide = models.ForeignKey(Pesticides, on_delete=RESTRICT)
+    usage = models.CharField(max_length=100, null=True, blank=True)
+    status = models.BooleanField(default=True)
+
+    class Meta:
+        verbose_name_plural = "Usages"
+
 class Fertilizers(models.Model):
     fertilizer_id = models.UUIDField(primary_key=True, editable=False, unique=True, default=uuid.uuid4)
     name = models.CharField(max_length=150)
@@ -144,6 +171,24 @@ class FertilizerSource(models.Model):
     link = models.CharField(max_length=250, null=True, blank=True)
     status = models.BooleanField(default=True)
 
+class FertilizerBenefits(models.Model):
+    benefit_id = models.UUIDField(primary_key=True, editable=False, unique=True, default=uuid.uuid4)
+    fertilizer = models.ForeignKey(Fertilizers, on_delete=RESTRICT)
+    benefit = models.CharField(max_length=1000)
+    status = models.BooleanField(default=True)
+
+    class Meta:
+        verbose_name_plural = 'Benefits'
+
+class FertilizerNotes(models.Model):
+    notes_id = models.UUIDField(primary_key=True, editable=False, unique=True, default=uuid.uuid4)
+    fertilizer = models.ForeignKey(Fertilizers, on_delete=RESTRICT)
+    notes = models.CharField(max_length=1000)
+    status = models.BooleanField(default=True)
+
+    class Meta:
+        verbose_name_plural = 'Notes'
+
 class Appointments(models.Model):
     appointment_id = models.UUIDField(primary_key=True, editable=False, unique=True, default=uuid.uuid4)
     user = models.ForeignKey(User, on_delete=RESTRICT)
@@ -170,3 +215,10 @@ class Notification(models.Model):
     body = models.CharField(max_length=500)
     sent_datetime = models.DateTimeField(null=True, blank=True)
     date_created = models.DateTimeField()
+
+class Announcement(models.Model):
+    announcement_id = models.UUIDField(primary_key=True, editable=False, unique=True, default=uuid.uuid4)
+    subject = models.CharField(max_length=100)
+    body = models.CharField(max_length=1000)
+    sent_datetime = models.DateTimeField(default=timezone.now)
+    created_by = models.ForeignKey(User, on_delete=RESTRICT, related_name='created_by_%(class)s')
