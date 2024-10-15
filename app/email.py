@@ -2,7 +2,8 @@ from django.core.mail import send_mail, EmailMultiAlternatives
 from datetime import date, datetime, timedelta, timezone
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
-
+from weasyprint import HTML
+from io import BytesIO
 # def send_registration_success_email(firstname, email, id):
 #     subject = 'BioFarmula - Validate Your Account'
 #     message = 'Validate your account to signin to your account'
@@ -12,6 +13,20 @@ from django.utils.html import strip_tags
 #     html_message += '<p>Welcome to BioFarmula, Please validate your account with the link provided</p>'
 #     html_message += "<p><a href='http://localhost:8000/validation/" + str(id) + "'></a></p>"
 #     send_mail(subject, message, from_email, recipient_list, html_message=html_message)
+
+def generate_certificate_pdf(name, inclusive_date, details, signatory):
+    # Render the certificate HTML
+    html_content = render_to_string('app/emails/certificate.html', {
+        'name': name,
+        'inclusive_date': inclusive_date,    
+        'details': details,
+        'signatory': signatory,
+    })
+    # Create a BytesIO object to store PDF
+    pdf_file = BytesIO()
+    # Generate PDF using WeasyPrint
+    HTML(string=html_content).write_pdf(pdf_file)
+    return pdf_file
 
 def send_registration_success_email(firstname, email, id):
     subject = 'BioFarmula - Validate Your Account'
@@ -137,7 +152,7 @@ def send_password_reset(contact_email, customer_email, farm_name, website_url, c
     email.attach_alternative(html_message, "text/html")
     email.send()
 
-def send_certificate(name, email, inclusive_date, details, signatory):
+""" def send_certificate(name, email, inclusive_date, details, signatory):
     subject = "Here's is your certificate"
     html_message = render_to_string('app/emails/certificate.html', {
         'name': name,
@@ -152,6 +167,25 @@ def send_certificate(name, email, inclusive_date, details, signatory):
 
     email = EmailMultiAlternatives(subject, plain_message, from_email, [to])
     email.attach_alternative(html_message, "text/html")
+    email.send() """
+
+def send_certificate(name, email, inclusive_date, details, signatory):
+    pdf_file = generate_certificate_pdf(name, inclusive_date, details, signatory)
+    subject = "Here's is your certificate"
+    html_message = render_to_string('app/emails/certificate.html', {
+        'name': name,
+        'inclusive_date': inclusive_date,    
+        'details': details,
+        'signatory': signatory,
+    })
+
+    plain_message = strip_tags(html_message)
+    from_email = 'biofarmula3@gmail.com'
+    to = email
+
+    email = EmailMultiAlternatives(subject, plain_message, from_email, [to])
+    email.attach_alternative(html_message, "text/html")
+    email.attach(f'{name}_certificate.pdf', pdf_file.getvalue(), 'application/pdf')
     email.send()
 
 
