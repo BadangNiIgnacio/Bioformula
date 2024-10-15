@@ -19,7 +19,7 @@
         <div style="border: 1px solid #ccc; width: 100%; height: auto; margin-top: 0; padding-top: 0;">
             <ul class="col-12">
                 {% for i in ing %}
-                <li class="li-">{{i.description}}</li>
+                <li class="li-">{{i.measure}} {{i.description}}</li>
                 {% endfor %}
             </ul>
         </div>
@@ -37,6 +37,26 @@
             <ul class="col-12">
                 {% for i in source %}
                 <li class="li-">{{i.source}} - <a href="{{i.link}}" target="_blank">{{i.link}}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+        {% if benefits %}
+        <p style="text-align: left; font-weight: 500;">Benefits</p>
+        <div style="border: 1px solid #ccc; width: 100%; height: auto; margin-top: 0; padding-top: 0;">
+            <ul class="col-12">
+                {% for i in benefits %}
+                <li class="li-">{{i.benefit}}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+        {% if notes %}
+        <p style="text-align: left; font-weight: 500;">Notes</p>
+        <div style="border: 1px solid #ccc; width: 100%; height: auto; margin-top: 0; padding-top: 0;">
+            <ul class="col-12">
+                {% for i in notes %}
+                <li class="li-">{{i.notes}}</li>
                 {% endfor %}
             </ul>
         </div>

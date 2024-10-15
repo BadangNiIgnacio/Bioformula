@@ -44,6 +44,7 @@
                   {% endif %}
                   {% if request.session.group == 'Admin' %}
                   <a class="nav-item nav-link" href="{% url 'certificate' %}">Certificate</a>
+                  <a class="nav-item nav-link" href="/admin">Admin</a>
                   {% endif %}
                   <a class="nav-item nav-link" href="#">About</a>
                   {% if request.session.userid %}
@@ -80,6 +81,7 @@
                               {% endif %}
                               {% if request.session.group == 'Admin' %}
                               <li {% if page == 'Certificate' %}class="active"{% endif %}><a href="{% url 'certificate' %}">Certificate</a></li>
+                              <li {% if page == 'Admin' %}class="active"{% endif %}><a href="/admin">Admin</a></li>
                               {% endif %}
                               <li {% if page == 'About' %}class="active"{% endif %}><a href="{% url 'index'%}#about">About</a></li>
                               {% if request.session.userid %}

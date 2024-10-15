@@ -54,6 +54,7 @@ class Pesticides(models.Model):
 class PesticideIngredients(models.Model):
     ingredient_id = models.UUIDField(primary_key=True, editable=False, unique=True, default=uuid.uuid4)
     pesticide = models.ForeignKey(Pesticides, on_delete=RESTRICT)
+    measure = models.CharField(max_length=50, null=True, blank=True)
     description = models.CharField(max_length=250)
 
     def __str__(self):
@@ -115,6 +116,15 @@ class PesticideUsage(models.Model):
     class Meta:
         verbose_name_plural = "Usages"
 
+class PesticideTargetPest(models.Model):
+    pest_id = models.UUIDField(primary_key=True, editable=False, unique=True, default=uuid.uuid4)
+    pesticide = models.ForeignKey(Pesticides, on_delete=RESTRICT)
+    pest = models.CharField(max_length=100, null=True, blank=True)
+    status = models.BooleanField(default=True)
+
+    class Meta:
+        verbose_name_plural = "Target Pests"
+
 class Fertilizers(models.Model):
     fertilizer_id = models.UUIDField(primary_key=True, editable=False, unique=True, default=uuid.uuid4)
     name = models.CharField(max_length=150)
@@ -128,6 +138,7 @@ class Fertilizers(models.Model):
 class FertilizersIngredients(models.Model):
     ingredient_id = models.UUIDField(primary_key=True, editable=False, unique=True, default=uuid.uuid4)
     fertilizer = models.ForeignKey(Fertilizers, on_delete=RESTRICT)
+    measure = models.CharField(max_length=50, null=True, blank=True)
     description = models.CharField(max_length=250)
 
     def __str__(self):
@@ -138,13 +149,6 @@ class FertilizersProcedure(models.Model):
     fertilizer = models.ForeignKey(Fertilizers, on_delete=RESTRICT)
     procedure = models.CharField(max_length=500)
 
-# class FertilizerFeedback(models.Model):
-#     feedback_id = models.UUIDField(primary_key=True, editable=False, unique=True, default=uuid.uuid4)
-#     user = models.ForeignKey(User, on_delete=RESTRICT)
-#     fertilizer = models.ForeignKey(Fertilizers, on_delete=RESTRICT)
-#     rating = models.IntegerField(default=0)
-#     feedback = models.CharField(max_length=250)
-#     datetime_posted = models.DateTimeField()
 
 class FertilizerFeedback(models.Model):
     feedback_id = models.UUIDField(primary_key=True, editable=False, unique=True, default=uuid.uuid4)

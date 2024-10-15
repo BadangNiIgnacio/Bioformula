@@ -51,6 +51,9 @@ def fertilizer_details(request, id):
     proc = FertilizersProcedure.objects.filter(fertilizer_id=id)
     feedback = FertilizerFeedback.objects.filter(fertilizer_id=id)
     source = FertilizerSource.objects.filter(fertilizer_id=id)
+    benefits = FertilizerBenefits.objects.filter(fertilizer_id=id)
+    notes = FertilizerNotes.objects.filter(fertilizer_id=id)
+
     for i in feedback:
         profile = Profile.objects.filter(user_id=i.user_id)
         for x in profile:
@@ -59,7 +62,7 @@ def fertilizer_details(request, id):
             else:
                 i.image = settings.MEDIA_URL + "dp/default.jpeg"
     form = FertilizerConversionForm(instance=instance)
-    return render(request, 'app/fertilizer-details.html', {'page': page, 'details': details, 'ing': ing, 'proc': proc, 'feedback': feedback, 'id': id, 'form': form, 'source': source })
+    return render(request, 'app/fertilizer-details.html', {'page': page, 'details': details, 'ing': ing, 'proc': proc, 'feedback': feedback, 'id': id, 'form': form, 'source': source, 'benefits': benefits, 'notes': notes})
 
 def post_fertilizer_feedback(request, id):
     try:
@@ -111,6 +114,10 @@ def pesticide_details(request, id):
     proc = PesticideProcedure.objects.filter(pesticide_id=id)
     feedback = PesticideFeedback.objects.filter(pesticide_id=id)
     source = PesticideSource.objects.filter(pesticide_id=id)
+    pest = PesticideTargetPest.objects.filter(pesticide_id=id)
+    usage = PesticideUsage.objects.filter(pesticide_id=id)
+    benefit = PesticideBenefit.objects.filter(pesticide_id=id)
+    notes = PesticideNotes.objects.filter(pesticide_id=id)
     for i in feedback:
         profile = Profile.objects.filter(user_id=i.user_id)
         for x in profile:
@@ -119,7 +126,7 @@ def pesticide_details(request, id):
             else:
                 i.image = settings.MEDIA_URL + "dp/default.jpeg"
     form = PesticideConversionForm(instance=instance)
-    return render(request, 'app/pesticide-details.html', {'page': page, 'details': details, 'ing': ing, 'proc': proc, 'feedback': feedback, 'id': id, 'form': form, 'source': source})
+    return render(request, 'app/pesticide-details.html', {'page': page, 'details': details, 'ing': ing, 'proc': proc, 'feedback': feedback, 'id': id, 'form': form, 'source': source, 'pest': pest, 'usage': usage, 'benefits': benefit, 'notes': notes})
 
 
 def post_pesticide_feedback(request, id):

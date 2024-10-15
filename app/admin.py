@@ -100,6 +100,19 @@ class PesticideUsageStacked(admin.StackedInline):
                 pass
         return self.initial_num
     
+class PesticidePestStacked(admin.StackedInline):
+    model = PesticideTargetPest
+    initial_num = 1
+    list_display = ("pesticide", "pest", "status")
+
+    def get_extra(self, request, obj=None, **kwargs):
+        if obj is not None:
+            try:
+                return max(self.initial_num - obj.answers.count(), 1)
+            except:
+                pass
+        return self.initial_num
+    
 class FertilizerIngredientsStacked(admin.StackedInline):
     model = FertilizersIngredients
     initial_num = 1
@@ -193,6 +206,7 @@ class PesticideAdmin(admin.ModelAdmin):
         PesticideProcedureStacked,
         PesticideConversionStacked,
         PesticideSourceStacked,
+        PesticidePestStacked,
         PesticideBenefitStacked,
         PesticideNotesStacked,
         PesticideUsageStacked,
