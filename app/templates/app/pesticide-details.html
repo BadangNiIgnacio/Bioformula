@@ -9,76 +9,90 @@
                 <img src="{{details.0.image.url}}" class="img-fluid">
             </div>
         </div>
+        <br>
         {% endif %}
-       <h1 class="choose_taital">{{details.0.name}}</h1>
-        <p style="text-align: left; font-weight: 500;">Description</p>
-        <div style="border: 1px solid #ccc; width: 100%; height: auto; margin-top: 0; padding-top: 0;">
-        <p style="text-align: justify; font-weight: 400;">{{details.0.description}}</p>
+        <div class="panel panel-success">
+            <div class="panel-heading" style="text-align: center;"><h4 style="font-weight: 700;">{{details.0.name}}</h4></div>
+            <div class="panel-body">{{details.0.description}}</div>
         </div>
-        <p style="text-align: left; font-weight: 500;">Ingredients</p>
-        <div style="border: 1px solid #ccc; width: 100%; height: auto; margin-top: 0; padding-top: 0;">
-            <ul class="col-12">
-                {% for i in ing %}
-                <li class="li-">{{i.measure}} {{i.description}}</li>
-                {% endfor %}
-            </ul>
+        <div class="panel panel-success">
+            <div class="panel-heading"><p style="font-size: 14pt; font-weight: 500;">Ingredients</p></div>
+            <div class="panel-body">
+                <ul class="col-12">
+                    {% for i in ing %}
+                    <li class="li-">{{i.measure}} {{i.description}}</li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
-        <p style="text-align: left; font-weight: 500;">Procedures</p>
-        <div style="border: 1px solid #ccc; width: 100%; height: auto; margin-top: 0; padding-top: 0;">
-            <ol class="col-12">
-                {% for i in proc %}
-                <li class="li-">{{i.procedure}}</li>
-                {% endfor %}
-            </ol>
+        <div class="panel panel-success">
+            <div class="panel-heading"><p style="font-size: 14pt; font-weight: 500;">Procedures</p></div>
+            <div class="panel-body">
+                <ol class="col-12">
+                    {% for i in proc %}
+                    <li class="li-">{{i.procedure}}</li>
+                    {% endfor %}
+                </ol>
+            </div>
         </div>
         {% if source %}
-        <p style="text-align: left; font-weight: 500;">Sources</p>
-        <div style="border: 1px solid #ccc; width: 100%; height: auto; margin-top: 0; padding-top: 0;">
-            <ul class="col-12">
-                {% for i in source %}
-                <li class="li-">{{i.source}} - <a href="{{i.link}}" target="_blank">{{i.link}}</a></li>
-                {% endfor %}
-            </ul>
+        <div class="panel panel-success">
+            <div class="panel-heading"><p style="font-size: 14pt; font-weight: 500;">Sources</p></div>
+            <div class="panel-body">
+                <ul class="col-12">
+                    {% for i in source %}
+                    <li class="li-">{{i.source}} - <a href="{{i.link}}" target="_blank">{{i.link}}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
         {% endif %}
         {% if pest %}
-        <p style="text-align: left; font-weight: 500;">Target Pest</p>
-        <div style="border: 1px solid #ccc; width: 100%; height: auto; margin-top: 0; padding-top: 0;">
-            <ul class="col-12">
-                {% for i in pest %}
-                <li class="li-">{{i.pest}}</li>
-                {% endfor %}
-            </ul>
+        <div class="panel panel-success">
+            <div class="panel-heading"><p style="font-size: 14pt; font-weight: 500;">Target Pest</p></div>
+            <div class="panel-body">
+                <ul class="col-12">
+                    {% for i in pest %}
+                    <li class="li-">{{i.pest}}</li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
         {% endif %}
         {% if usage %}
-        <p style="text-align: left; font-weight: 500;">Usage</p>
-        <div style="border: 1px solid #ccc; width: 100%; height: auto; margin-top: 0; padding-top: 0;">
-            <ul class="col-12">
-                {% for i in usage %}
-                <li class="li-">{{i.usage}}</li>
-                {% endfor %}
-            </ul>
+        <div class="panel panel-success">
+            <div class="panel-heading"><p style="font-size: 14pt; font-weight: 500;">Usage</p></div>
+            <div class="panel-body">
+                <ul class="col-12">
+                    {% for i in usage %}
+                    <li class="li-">{{i.usage}}</li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
         {% endif %}
         {% if benefits %}
-        <p style="text-align: left; font-weight: 500;">Benefits</p>
-        <div style="border: 1px solid #ccc; width: 100%; height: auto; margin-top: 0; padding-top: 0;">
-            <ul class="col-12">
-                {% for i in benefits %}
-                <li class="li-">{{i.benefit}}</li>
-                {% endfor %}
-            </ul>
+        <div class="panel panel-success">
+            <div class="panel-heading"><p style="font-size: 14pt; font-weight: 500;">Benefits</p></div>
+            <div class="panel-body">
+                <ul class="col-12">
+                    {% for i in benefits %}
+                    <li class="li-">{{i.benefit}}</li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
         {% endif %}
         {% if notes %}
-        <p style="text-align: left; font-weight: 500;">Notes</p>
-        <div style="border: 1px solid #ccc; width: 100%; height: auto; margin-top: 0; padding-top: 0;">
-            <ul class="col-12">
-                {% for i in notes %}
-                <li class="li-">{{i.notes}}</li>
-                {% endfor %}
-            </ul>
+        <div class="panel panel-success">
+            <div class="panel-heading"><p style="font-size: 14pt; font-weight: 500;">Notes</p></div>
+            <div class="panel-body">
+                <ul class="col-12">
+                    {% for i in notes %}
+                    <li class="li-">{{i.notes}}</li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
         {% endif %}
         <hr>

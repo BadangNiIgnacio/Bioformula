@@ -12,6 +12,7 @@ from django.db.models import Q
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Max
+from django.views.decorators.http import require_GET
 
 def index(request):
     page = 'Organic'
@@ -21,19 +22,15 @@ def fertilizer(request):
     page = 'Organic'
     if request.method == "POST":
         try:
-            form = FertilizerSearchForm(request.POST)
-            if form.is_valid():
-                search = form.cleaned_data['search']
-                result = FertilizersIngredients.objects.filter(
-                    Q(fertilizer__name__icontains=search) | Q(fertilizer__description__icontains=search) | Q(description__icontains=search)
-                )
-                paginator = Paginator(result, 10)
-                page_number = request.GET.get('page')
-                page_obj = paginator.get_page(page_number)
-                form = FertilizerSearchForm()
-                return render(request, 'app/fertilizer.html', {'page': page, 'form': form, 'list_': page_obj})
-            else:
-                messages.warning(request, form.errors)
+            search = request.POST.get("search")
+            result = FertilizersIngredients.objects.filter(
+                Q(fertilizer__name__icontains=search) | Q(fertilizer__description__icontains=search) | Q(description__icontains=search)
+            )
+            paginator = Paginator(result, 10)
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+            form = FertilizerSearchForm()
+            return render(request, 'app/fertilizer.html', {'page': page, 'form': form, 'list_': page_obj})
         except Exception as e:
             messages.error(request, str(e))
     fertilizer = Fertilizers.objects.filter(status=True).annotate(max_rating=Max('fertilizerfeedback__rating')).order_by('-max_rating')
@@ -85,18 +82,15 @@ def pesticide(request):
     if request.method == "POST":
         try:
             form = PesticideSearchForm(request.POST)
-            if form.is_valid():
-                search = form.cleaned_data['search']
-                result = PesticideIngredients.objects.filter(
-                    Q(pesticide__name__icontains=search) | Q(pesticide__description__icontains=search) | Q(description__icontains=search)
-                )
-                paginator = Paginator(result, 10)
-                page_number = request.GET.get('page')
-                page_obj = paginator.get_page(page_number)
-                form = PesticideSearchForm()
-                return render(request, 'app/pesticide.html', {'page': page, 'form': form, 'list_': page_obj})
-            else:
-                messages.warning(request, form.errors)
+            search = request.POST.get("search")
+            result = PesticideIngredients.objects.filter(
+                Q(pesticide__name__icontains=search) | Q(pesticide__description__icontains=search) | Q(description__icontains=search)
+            )
+            paginator = Paginator(result, 10)
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+            form = PesticideSearchForm()
+            return render(request, 'app/pesticide.html', {'page': page, 'form': form, 'list_': page_obj})
         except Exception as e:
             messages.error(request, str(e))
     pesticide = Pesticides.objects.filter(status=True).annotate(max_rating=Max('pesticidefeedback__rating')).order_by('-max_rating')
@@ -217,3 +211,46 @@ def fertilizer_conversion(request):
             }
         return JsonResponse(response)
     return JsonResponse({'error': 'Invalid request'}, status=400)
+
+@require_GET
+def search_suggestions(request):
+    query = request.GET.get('q', '')  # Get the search term from the query parameter
+    if query:
+        suggestions = FertilizersIngredients.objects.filter(
+                    Q(fertilizer__name__icontains=query) | Q(fertilizer__description__icontains=query) | Q(description__icontains=query)
+                )
+        suggestions_list = list(suggestions.values('description')[:10])  # Convert QuerySet to list
+        fertilizers = Fertilizers.objects.filter(Q(name__icontains=query))
+        fertilizers_list = list(fertilizers.values('name')[:10])
+    else:
+        suggestions_list = []
+        fertilizers_list = []
+    
+    results = {
+        'suggestion': suggestions_list,
+        'fertilizers': fertilizers_list,
+    }
+    return JsonResponse(results, safe=False)
+
+@require_GET
+def search_suggestions_pest(request):
+    query = request.GET.get('q', '')  # Get the search term from the query parameter
+    if query:
+        suggestions = PesticideIngredients.objects.filter(
+                    Q(pesticide__name__icontains=query) | Q(pesticide__description__icontains=query) | Q(description__icontains=query)
+                )
+        suggestions_list = list(suggestions.values('description')[:10])  # Convert QuerySet to list
+        pesticides = Pesticides.objects.filter(Q(name__icontains=query))
+        print(pesticides)
+        pesticide_list = list(pesticides.values('name')[:10])
+    else:
+        suggestions_list = []
+        pesticide_list = []
+
+    print(pesticide_list)
+    
+    results = {
+        'suggestion': suggestions_list,
+        'pesticides': pesticide_list,
+    }
+    return JsonResponse(results, safe=False)

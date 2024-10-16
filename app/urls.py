@@ -26,4 +26,6 @@ urlpatterns = [
     path('forgot-password', auth.forgot, name='forgot-password'),
     path('new-password/<str:id>', auth.new_password, name='new-password'),
     path('certificate', certificate.index, name='certificate'),
+    path('search-suggestions', organic.search_suggestions, name='search-suggestions'),
+    path('search-suggestions-pest', organic.search_suggestions_pest, name='search-suggestions-pest'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

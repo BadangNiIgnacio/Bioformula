@@ -11,8 +11,10 @@
             {%include 'app/messages.html'%}
             {% csrf_token %}
             <div class="form-group">
-                <label for="{{form.search.id_for_label}}" class="col-form-label">{{form.search.label}} {%if form.search.field.required%}<i style="color:rgb(76, 0, 255)">*</i>{%endif%}</label>
-                {{form.search}}
+                <!-- <label for="{{form.search.id_for_label}}" class="col-form-label">{{form.search.label}} {%if form.search.field.required%}<i style="color:rgb(76, 0, 255)">*</i>{%endif%}</label>
+                {{form.search}} -->
+               <input type="text" id="search-box" name="search" class="form-control" autocomplete="off" placeholder="Search...">
+               <div id="suggestions-box" class="suggestions" style="display: none; background-color: #fff;"></div>
             </div>
         </form>
        </div>
@@ -108,4 +110,8 @@
        </div>
     </div>
  </div>
+{% endblock %}
+
+{% block fertilizer_script %}
+<script src="{% static 'app/js/fertilizers.js' %}"></script>
 {% endblock %}
