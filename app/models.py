@@ -92,7 +92,7 @@ class PesticideSource(models.Model):
 class PesticideBenefit(models.Model):
     benefit_id = models.UUIDField(primary_key=True, editable=False, unique=True, default=uuid.uuid4)
     pesticide = models.ForeignKey(Pesticides, on_delete=RESTRICT)
-    benefit = models.CharField(max_length=100, null=True, blank=True)
+    benefit = models.CharField(max_length=1000, null=True, blank=True)
     status = models.BooleanField(default=True)
 
     class Meta:
@@ -101,7 +101,7 @@ class PesticideBenefit(models.Model):
 class PesticideNotes(models.Model):
     notes_id = models.UUIDField(primary_key=True, editable=False, unique=True, default=uuid.uuid4)
     pesticide = models.ForeignKey(Pesticides, on_delete=RESTRICT)
-    notes = models.CharField(max_length=100, null=True, blank=True)
+    notes = models.CharField(max_length=1000, null=True, blank=True)
     status = models.BooleanField(default=True)
 
     class Meta:
@@ -110,7 +110,7 @@ class PesticideNotes(models.Model):
 class PesticideUsage(models.Model):
     usage_id = models.UUIDField(primary_key=True, editable=False, unique=True, default=uuid.uuid4)
     pesticide = models.ForeignKey(Pesticides, on_delete=RESTRICT)
-    usage = models.CharField(max_length=100, null=True, blank=True)
+    usage = models.CharField(max_length=1000, null=True, blank=True)
     status = models.BooleanField(default=True)
 
     class Meta:

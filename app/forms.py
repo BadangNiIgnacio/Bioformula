@@ -82,6 +82,7 @@ class ReservationDetailsForm(forms.Form):
     event_type = forms.CharField(label='Event Type', max_length=150, widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 4}))
     start = forms.DateField(label='Start Date', widget=forms.DateInput(attrs={'class': 'form-control datepicker'}))
     end = forms.DateField(label='End Date', widget=forms.DateInput(attrs={'class': 'form-control datepicker'}))
+    notes = forms.CharField(label='Notes', required=False, max_length=150, widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 4}))
     status = forms.ChoiceField(label='Status', choices=RESERVATION_STATUS, widget=forms.Select())
 
 class PesticideConversionForm(forms.ModelForm):
