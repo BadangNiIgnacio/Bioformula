@@ -20,6 +20,8 @@
        </div>
        <br><br>
        <div class="container">
+         {% if list_ %}
+         <h5 style="text-align: left; font-weight: bold; font-size: 14pt;">Suggestion from admin</h5>
          <table class="table table-hover" style="width: 100%; text-align: justify;">
             <thead>
                <tr style="background-color: #defde0;">
@@ -28,12 +30,6 @@
                </tr>
             </thead>
             <tbody>
-               {% for i in list %}
-               <tr onclick="window.location.href='/fertilizer-details/{{i.fertilizer_id}}#fertilizer'" style="cursor: pointer;">
-                  <td style="font-weight: bold;">{{i.name}}</td>
-                  <td>{{i.description}}</td>
-               </tr>
-               {% endfor %}
                {% for i in list_ %}
                <tr onclick="window.location.href='/fertilizer-details/{{i.fertilizer_id}}#fertilizer'" style="cursor: pointer;">
                   <td>{{i.fertilizer.name}}</td>
@@ -42,6 +38,37 @@
                {% endfor %}
             </tbody>
          </table>
+         {% if fertilizer %}
+         <h5 style="text-align: left; font-weight: bold; font-size: 14pt;">Suggestion base from the ratings</h5>
+         <table class="table table-hover" style="width: 100%; text-align: justify;">
+            <thead>
+               <tr style="background-color: #defde0;">
+                  <th>Fertilizer</th>
+                  <th>Rating</th>
+               </tr>
+            </thead>
+            <tbody>
+               {% for i in fertilizer %}
+               <tr onclick="window.location.href='/fertilizer-details/{{i.fertilizer_id}}#fertilizer'" style="cursor: pointer;">
+                  <td>{{i.fertilizer.name}}</td>
+                  <td>
+                     {% if i.max_rating == 1 %}
+                        <span class="stars">&#9733;</span>
+                     {% elif i.max_rating == 2 %}
+                        <span class="stars">&#9733;&#9733;</span>
+                     {% elif i.max_rating == 3 %}
+                        <span class="stars">&#9733;&#9733;&#9733;</span>
+                     {% elif i.max_rating == 4 %}
+                        <span class="stars">&#9733;&#9733;&#9733;&#9733;</span>
+                     {% elif i.max_rating == 5 %}
+                        <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                     {% endif %}
+                  </td>
+               </tr>
+               {% endfor %}
+            </tbody>
+         </table>
+         {% endif %}
          <br>
          <nav aria-label="Page navigation example">
                <ul class="pagination justify-content-center">
@@ -107,6 +134,7 @@
                   {% endif %}
                </ul>
          </nav> 
+         {% endif %}
        </div>
     </div>
  </div>
