@@ -31,8 +31,8 @@
             <tbody>
                {% for i in list_ %}
                <tr onclick="window.location.href='/pesticide-details/{{i.pesticide_id}}#pesticide'" style="cursor: pointer;">
-                  <td>{{i.pesticide.name}}</td>
-                  <td>{{i.pesticide.description}}</td>
+                  <td>{{i.pesticide__name}}</td>
+                  <td>{{i.pesticide__description}}</td>
                </tr>
                {% endfor %}
             </tbody>
@@ -49,17 +49,17 @@
             <tbody>
                {% for i in pesticide %}
                <tr onclick="window.location.href='/pesticide-details/{{i.pesticide_id}}#pesticide'" style="cursor: pointer;">
-                  <td>{{i.pesticide.name}}</td>
+                  <td>{{i.pesticide_name}}</td>
                   <td>
-                     {% if i.max_rating == 1 %}
+                     {% if i.rating == 1 %}
                         <span class="stars">&#9733;</span>
-                     {% elif i.max_rating == 2 %}
+                     {% elif i.rating == 2 %}
                         <span class="stars">&#9733;&#9733;</span>
-                     {% elif i.max_rating == 3 %}
+                     {% elif i.rating == 3 %}
                         <span class="stars">&#9733;&#9733;&#9733;</span>
-                     {% elif i.max_rating == 4 %}
+                     {% elif i.rating == 4 %}
                         <span class="stars">&#9733;&#9733;&#9733;&#9733;</span>
-                     {% elif i.max_rating == 5 %}
+                     {% elif i.rating == 5 %}
                         <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
                      {% endif %}
                   </td>

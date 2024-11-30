@@ -8,7 +8,7 @@ from django.contrib.sessions.models import Session
 from django.core.paginator import Paginator
 from ..forms import *
 from ..models import *
-from django.db.models import Q
+from django.db.models import Q, Avg, Count
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Max
@@ -26,15 +26,33 @@ def fertilizer(request):
             search = request.POST.get("search")
             result = FertilizersIngredients.objects.filter(
                 Q(fertilizer__name__icontains=search) | Q(fertilizer__description__icontains=search) | Q(description__icontains=search)
-            ).distinct()
-
+            ).values('fertilizer_id', 'fertilizer__name', 'fertilizer__description').annotate(count=Count('fertilizer_id')).distinct()
             #feedback
-            fertilizer = FertilizerFeedback.objects.filter(fertilizer__status=True).annotate(max_rating=Max('rating')).order_by('-max_rating')
+            #fertilizer = FertilizerFeedback.objects.filter(fertilizer__status=True).annotate(max_rating=Max('rating')).order_by('-max_rating')
+            """ fertilizer = FertilizerFeedback.objects.filter(
+                Q(fertilizer__name__icontains=search) | Q(fertilizer__description__icontains=search)
+            ).values('fertilizer_id').annotate(avg_rating=Avg('rating')).order_by('-rating') """
+            ratings = []
+            if result:
+                for i in result:
+                    fertilizer = FertilizerFeedback.objects.filter(fertilizer_id=i['fertilizer_id'])
+                    rating = 0
+                    count = 0
+                    for j in fertilizer:
+                        rating += j.rating
+                        count += 1
+                        rating = rating / count
+                    ave = {
+                        'fertilizer_id'     : i['fertilizer_id'],
+                        'fertilizer_name'   : i['fertilizer__name'],
+                        'rating'            : rating
+                    }
+                    ratings.append(ave)
             paginator = Paginator(result, 10)
             page_number = request.GET.get('page')
             page_obj = paginator.get_page(page_number)
             form = FertilizerSearchForm()
-            return render(request, 'app/fertilizer.html', {'page': page, 'form': form, 'list_': page_obj, 'fertilizer': fertilizer})
+            return render(request, 'app/fertilizer.html', {'page': page, 'form': form, 'list_': page_obj, 'fertilizer': ratings})
         except Exception as e:
             messages.error(request, str(e))
     form = FertilizerSearchForm()
@@ -85,15 +103,31 @@ def pesticide(request):
             search = request.POST.get("search")
             result = PesticideIngredients.objects.filter(
                 Q(pesticide__name__icontains=search) | Q(pesticide__description__icontains=search) | Q(description__icontains=search)
-            ).distinct()
+            ).values('pesticide_id', 'pesticide__name', 'pesticide__description').annotate(count=Count('pesticide_id')).distinct()
 
             #feedback
-            pesticide = PesticideFeedback.objects.filter(pesticide__status=True).annotate(max_rating=Max('rating')).order_by('-max_rating')
+            # pesticide = PesticideFeedback.objects.filter(pesticide__status=True).annotate(max_rating=Max('rating')).order_by('-max_rating')
+            ratings = []
+            if result:
+                for i in result:
+                    pesticide = PesticideFeedback.objects.filter(pesticide_id=i['pesticide_id'])
+                    rating = 0
+                    count = 0
+                    for j in pesticide:
+                        rating += j.rating
+                        count += 1
+                        rating = rating / count
+                    ave = {
+                        'pesticide_id'     : i['pesticide_id'],
+                        'pesticide_name'   : i['pesticide__name'],
+                        'rating'           : rating
+                    }
+                    ratings.append(ave)
             paginator = Paginator(result, 10)
             page_number = request.GET.get('page')
             page_obj = paginator.get_page(page_number)
             form = PesticideSearchForm()
-            return render(request, 'app/pesticide.html', {'page': page, 'form': form, 'list_': page_obj, 'pesticide': pesticide})
+            return render(request, 'app/pesticide.html', {'page': page, 'form': form, 'list_': page_obj, 'pesticide': ratings})
         except Exception as e:
             messages.error(request, str(e))
     form = PesticideSearchForm()
