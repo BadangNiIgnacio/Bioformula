@@ -6,6 +6,8 @@
 @import url('https://fonts.googleapis.com/css?family=Rajdhani:300,400,500,600,700');
 @import url('https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i');
 
+@import url('https://fonts.googleapis.com/css2?family=Agbalumo&family=Kaushan+Script&family=Poppins:wght@100;300&family=Proza+Libre:wght@500&family=Wix+Madefor+Display&display=swap');
+
 /*****---------------------------------------- 1) font-family: 'Rajdhani', sans-serif;
  2) font-family: 'Poppins', sans-serif;
  ----------------------------------------*****/
@@ -39,7 +41,7 @@ html {
 body {
     color: #666666;
     font-size: 14px;
-    font-family: Poppins;
+    font-family: 'Poppins';
     line-height: 1.80857;
     font-weight: normal;
     overflow-x: hidden;
@@ -86,6 +88,7 @@ h2 {
     font-size: 22px;
     transition: all 0.3s ease;
     font-weight: bold;
+    color: #000;
 }
 
 .index_organic:hover{
@@ -230,10 +233,10 @@ button {
     width: 100%;
 }
 
-.layout_padding {
+/* .layout_padding {
     padding-top: 90px;
     padding-bottom: 0px;
-}
+} */
 
 .padding_0 {
     padding: 0px;
@@ -247,10 +250,10 @@ button {
     background-size: 100%;
 }
 
-.logo {
+/* .logo {
     width: 6%;
     float: left;
-}
+} */
 
 .bg-light {
     background-color: transparent !important;
@@ -288,13 +291,13 @@ button {
 .banner_section {
     width: 100%;
     float: left;
-    padding-bottom: 90px;
+    padding-bottom: 150px;
 }
 
 .banner_taital {
     width: 85%;
     float: left;
-    font-size: 35px;
+    font-size: 40px;
     color: #c5d512;
     font-weight: bold;
     padding-top: 30px;
@@ -303,7 +306,7 @@ button {
 .banner_text {
     width: 100%;
     float: left;
-    font-size: 13px;
+    font-size: 15px;
     color: #c5d512;
     margin: 0px;
     text-transform: uppercase;
@@ -338,84 +341,47 @@ button {
     background-color: #ffffff;
 }
 
-.custum_menu {
-    width: 100%;
-    float: left;
-    margin-top: 90px;
+
+.search-container {
+    display: flex;
+    align-items: center;
+    border: 2px solid#7cc568;
+    border-radius: 10px; 
+    overflow: hidden; 
+    width: 700px; 
 }
 
-.custum_menu ul {
-    margin: 0px;
-    padding: 0px;
+.search-icon-box {
+    background-color: #2b9732;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.custum_menu li {
-    float: left;
-    font-size: 18px;
-    color: #ffffff;
-    text-transform: uppercase;
-    padding: 5px 20px;
-    margin-right: 10px;
+.search-icon-img {
+    width: 20px; 
+    height: 20px; 
 }
 
-.custum_menu li a {
-    color: #ffffff;
+#search-box {
+    border: none;
+    outline: none; 
+    padding: 10px;
+    flex: 1; 
+    border-radius: 0; 
 }
-
-.custum_menu li:hover {
-    color: #ffffff;
-    background-color: #a3b104;
-    border-radius: 4px;
-}
-
-.custum_menu li.active {
-    color: #ffffff;
-    background-color: #a3b104;
-    border-radius: 4px;
-}
-
-/* #main_slider a.carousel-control-next {
-    position: absolute;
-    right: 30px;
-    top: 0%;
-    background: #a3b104;
-    color: #000;
-}
-
-#main_slider a.carousel-control-prev {
-    position: absolute;
-    right: 30px;
-    top: 15%;
-    background-color: #ffffff;
-    left: initial;
-    color: #000;
-}
-
-#main_slider .carousel-control-prev,
-#main_slider .carousel-control-next {
-    width: 68px;
-    height: 68px;
-    background: #a3b104;
-    opacity: 1;
-    font-size: 30px;
-    color: #000;
-    border-radius: 100px;
-}
-
-#main_slider .carousel-control-prev:hover,
-#main_slider .carousel-control-next:hover,
-#main_slider .carousel-control-prev:focus,
-#main_slider .carousel-control-next:focus {
-    background: #a3b104;
-    color: #000;
-} */
 
 .services_section {
     width: 60%;
     margin: 0 auto;
     text-align: center;
     display: flex;
-    padding: 90px;
+    padding-top: 30px;
+    padding-right: 90px;
+    padding-bottom: 90px;
+    padding-left: 90px;
+    /* padding: 90px; */
 }
 
 .services_taital {
@@ -431,7 +397,7 @@ button {
 .services_section_2 {
     width: 100%;
     float: left;
-    padding-top: 30px;
+    padding-top: 5px;
 }
 
 .image_main {
@@ -625,7 +591,7 @@ button {
 .choose_section {
     width: 100%;
     float: left;
-    padding-bottom: 90px;
+    /* padding-bottom: 90px; */
     /* padding-left: 400px; */
 }
 
@@ -912,6 +878,7 @@ input.mail_text::placeholder {
     font-size: 16px;
     color: #292828;
     margin: 0px;
+    text-align: justify;
 }
 
 .quite_icon {
@@ -920,6 +887,7 @@ input.mail_text::placeholder {
     padding-top: 20px;
 }
 
+/* Default Styles for Carousel Controls */
 #my_slider a.carousel-control-next {
     position: absolute;
     right: -100px;
@@ -954,6 +922,31 @@ input.mail_text::placeholder {
     background: #164006;
     color: #ffffff;
 }
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    /* Adjust arrow position for medium screens */
+    #my_slider a.carousel-control-next {
+        right: -50px;
+    }
+    #my_slider a.carousel-control-prev {
+        left: -50px;
+    }
+}
+
+@media (max-width: 476px) {
+    /* Remove arrows completely on small screens */
+    #my_slider .carousel-control-prev,
+    #my_slider .carousel-control-next {
+        display: none;
+    }
+
+    /* Ensure carousel slides are centered */
+    #my_slider .carousel-item {
+        text-align: center;
+    }
+}
+
 
 .contact_section {
     width: 100%;
@@ -1039,13 +1032,14 @@ textarea.massage-bt::placeholder {
     float: left;
     background-image: url(../images/footer-bg.png);
     height: auto;
-    padding-bottom: 90px;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 .useful_text {
     width: 100%;
     float: left;
-    font-size: 22px;
+    font-size: 16px;
     color: #fefefe;
     font-weight: bold;
     text-transform: uppercase;
@@ -1054,7 +1048,7 @@ textarea.massage-bt::placeholder {
 .ipsum_text {
     width: 90%;
     float: left;
-    font-size: 16px;
+    font-size: 14px;
     color: #ffffff;
     margin: 0px;
 }
@@ -1062,15 +1056,18 @@ textarea.massage-bt::placeholder {
 .footer_links {
     width: 100%;
     float: left;
+    font-size: 14px;
 }
+
 
 .footer_links ul {
     margin: 0px;
     padding: 0px;
+    font-size: 10px;
 }
 
 .footer_links li {
-    font-size: 16px;
+    font-size: 14px;
     color: #fefefe;
 }
 
@@ -1097,7 +1094,7 @@ textarea.massage-bt::placeholder {
 }
 
 .addres_link li {
-    font-size: 16px;
+    font-size: 14px;
     color: #fefefe;
     padding-bottom: 10px;
 }
@@ -1120,10 +1117,12 @@ textarea.massage-bt::placeholder {
 .copyright_text {
     width: 100%;
     float: left;
-    font-size: 16px;
+    font-size: 14px;
     text-align: center;
     color: #000;
     margin-left: 0px;
+    padding-top: 15px;
+    padding-bottom: 0px;
 }
 
 .copyright_text a {

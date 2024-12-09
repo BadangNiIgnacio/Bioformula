@@ -4,76 +4,142 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Certificate</title>
+    
     <style>
         @page {
-            size: A4 landscape;  /* Set the page size to A4 and landscape orientation */
-            margin: 0in;         /* Optional: Set margins */
+            size: A4 landscape;  
+            margin: 0in;         
         }
 
-        html, body{
+        html, body {
             background-color: #fff;
-            background-image: url('http://localhost:8000/static/app/images/cert_background.png');
+            background-image: url('http://localhost:8000/static/app/images/cert.png');
             height: 100%;
             width: 100%;
             margin: 0;
             padding: 0;
             display: flex;
-            justify-content: center; /* Horizontally center */
-            background-size: cover; /* This makes the image cover the whole page */
+            justify-content: center; 
+            background-size: cover; 
             background-position: center;
             background-repeat: no-repeat;
         }
 
-        .certificate{
+        .certificate {
             width: 100%;
             height: 100%;
         }
 
-        .name{
+        .name {
             width: 70%;
-            margin-left: 10%;
+            margin-left: 15%;
             height: auto;
-            margin-top: 35%;
+            margin-top: 36%;
+            text-align: center;
+            position: relative;
+            padding-bottom: 10px;
         }
 
-        .name p{
+        .name::after {
+            content: "";
+            display: block;
+            width: 50%;
+            height: 1px;
+            background-color: #000;
+            margin: 0 auto;
+            margin-top: 10px;
+        }
+
+        .name p {
             margin-bottom: 0;
             padding: 0;
             font-size: 24pt;
             text-align: center;
             font-weight: bold;
-            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            font-family: 'Poppins';
+            text-transform: uppercase;
         }
 
-        .owner{
+        .owner {
             width: 40%;
-            margin-left: 8%;
+            margin-left: 29%;
         }
 
-        .owner p{
-            margin-top: 15%;
+        .owner p {
+            margin-top: 9%;
             margin-bottom: 0;
             padding: 0;
             font-size: 18pt;
             text-align: center;
             font-weight: 700;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif ;
+            font-family: 'Poppins';
         }
 
-        .details{
+        .details {
             width: 60%;
             height: auto;
-            margin-left: 10%;
+            margin-left: 21%;
         }
 
-        .details p{
+        .details p {
             margin-top: 1%;
             margin-bottom: 0;
             padding: 0;
             font-size: 14pt;
-            text-align: left;
-            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            font-family: 'Poppins';
         }
+
+        .details div {
+            font-family: 'Poppins', sans-serif;
+            font-size: 14pt;
+            line-height: 1.5;
+        }
+
+        .details div strong {
+            font-weight: bold;
+        }
+
+        .details div em {
+            font-style: italic;
+        }
+
+        .details div u {
+            text-decoration: underline;
+        }
+
+        .details div ul {
+            list-style-type: disc;
+            padding-left: 20px;
+        }
+
+        .details div ol {
+            list-style-type: decimal;
+            padding-left: 20px;
+        }
+
+        .details div li {
+            margin-bottom: 10px;
+        }
+
+        .ql-align-center {
+            text-align: center;
+        }
+
+        .ql-align-right {
+            text-align: right;
+        }
+
+        .ql-align-justify {
+            text-align: justify;
+        }
+
+        .ql-align-left {
+            text-align: left;
+        }
+
+
+        
+
     </style>
 </head>
 <body>
@@ -83,12 +149,11 @@
         </div>
 
         <div class="details">
-            <p>{{details}}</p>
-            <p>Last {{inclusive_date}}</p>
+            <div>{{ details|safe }}</div>
         </div>
 
         <div class="owner">
-            <p>{{signatory}}</p>
+            <p style="text-transform: uppercase;">{{signatory}}</p>
             <p style="margin-top: 0; font-size: 16pt; font-weight: 200;">Farm Owner</p>
         </div>
     </div>

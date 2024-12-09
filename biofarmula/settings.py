@@ -156,14 +156,32 @@ SESSION_COOKIE_AGE = 604800  # 1 week
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 
+# JAZZMIN_SETTINGS = {
+#     "copyright": "Badang ni Ignacio",
+#     "site_logo": "app/images/ignacio.png",
+#     "login_logo": "app/images/ignacio_300x300.png",
+#     "site_logo_classes": "img-circle",
+# }
+
 JAZZMIN_SETTINGS = {
     "copyright": "Badang ni Ignacio",
-    "site_logo": "app/images/badang_logo.png",
-    "login_logo": "app/images/badang-300x300.png",
+    "site_logo": "app/images/ignacio.png",
+    "login_logo": "app/images/ignacio_300x300.png",
     "site_logo_classes": "img-circle",
-}
+    "icons": {
+        "app.Announcements": "fas fa-seedling",        
+        "app.Appointments": "fas fa-calendar-check",  
+        "app.Fertilizers": "fas fa-seedling",         
+        "app.LandMeasures": "fas fa-ruler-combined",  
+        "app.Pesticides": "fas fa-spray-can",         
+        "app.UnitOfMeasurements": "fas fa-ruler",     
+        "auth.Group": "fas fa-users",               
+        "auth.User": "fas fa-user",                   
+    },
+    
 
-#JAZZMIN_SETTINGS["show_ui_builder"] = True
+}
+JAZZMIN_SETTINGS["show_ui_builder"] = True
 
 JAZZMIN_UI_TWEAKS = {
     "navbar_small_text": False,

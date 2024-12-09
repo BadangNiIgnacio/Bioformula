@@ -43,3 +43,12 @@ def register(request):
     else:
         messages.warning(request, "Invalid method used")
     return HttpResponseRedirect("/#registration-form")
+
+
+# def about(request):
+#     return render(request, 'app/about.html')
+
+def about(request):
+    page = 'About'
+    return render(request, 'app/about.html', {'page': page})
+

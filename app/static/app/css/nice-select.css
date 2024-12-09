@@ -3,13 +3,13 @@
 ---------------------------------------------------------------------*/
 
 .nice-select {
-  background-color: #f6f6f6;
-  border-radius: 0;
+  background-color: #bfe9bf;
+  border-radius: 5px;
   box-sizing: border-box;
   clear: both;
   display: block;
-  float: left;
-  height: auto;
+  /* float: left; */
+  height: 45px;
   outline: none;
   padding-left: 20px;
   padding-right: 35px;
@@ -20,7 +20,7 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  width: 50%;
+  width: 33%;
   cursor: pointer;
   font-family: inherit;
   font-weight: normal;
@@ -174,4 +174,16 @@
 
 .no-csspointerevents .nice-select.open .list {
   display: block;
+}
+
+@media (max-width: 768px) {
+  .nice-select {
+    width: 50%;
+  }
+}
+
+@media (max-width: 476px) {
+  .nice-select {
+    width: 100%;
+  }
 }

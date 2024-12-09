@@ -84,6 +84,7 @@ ul .li- {
 }
 
 .stars {
+    color: #f39c12;
     display: inline-block;
 }
 .stars input {

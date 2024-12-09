@@ -4,174 +4,303 @@
 <div class="choose_section layout_padding">
     <div class="container" id="fertilizer">
         {% if details.0.image %}
-        <div class="container" style="text-align: center;">
+        <div class="container text-center">
+            <h1 class="choose_taital" style="padding-top: 40px;">Organic Products - Fertilizers</h1>
             <div class="col-md-12 px-0">
-                <img src="{{details.0.image.url}}" class="img-fluid ">
+                <img src="{{details.0.image.url}}" class="img-fluid">
             </div>
         </div>
         <br>
         {% endif %}
-        <div class="container">
-            <div class="panel panel-success">
-                <div class="panel-heading" style="text-align: center;"><h4 style="font-weight: 700;">{{details.0.name}}</h4></div>
-                <div class="panel-body">{{details.0.description}}</div>
-            </div>
-            <div class="panel panel-success">
-                <div class="panel-heading"><p style="font-size: 14pt; font-weight: 500;">Ingredients</p></div>
-                <div class="panel-body">
-                    <ul class="col-12">
-                        {% for i in ing %}
-                        <li class="li-">{{i.measure}} {{i.description}}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-            <div class="panel panel-success">
-                <div class="panel-heading"><p style="font-size: 14pt; font-weight: 500;">Procedures</p></div>
-                <div class="panel-body">
-                    <ol class="col-12">
-                        {% for i in proc %}
-                        <li class="li-">{{i.procedure}}</li>
-                        {% endfor %}
-                    </ol>
-                </div>
-            </div>
-            {% if source %}
-            <div class="panel panel-success">
-                <div class="panel-heading"><p style="font-size: 14pt; font-weight: 500;">Sources</p></div>
-                <div class="panel-body">
-                    <ul class="col-12">
-                        {% for i in source %}
-                        <li class="li-">{{i.source}} - <a href="{{i.link}}" target="_blank">{{i.link}}</a></li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-            {% endif %}
-            {% if benefits %}
-            <div class="panel panel-success">
-                <div class="panel-heading"><p style="font-size: 14pt; font-weight: 500;">Benefits</p></div>
-                <div class="panel-body">
-                    <ul class="col-12">
-                        {% for i in benefits %}
-                        <li class="li-">{{i.benefit}}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-            {% endif %}
-            {% if notes %}
-            <div class="panel panel-success">
-                <div class="panel-heading"><p style="font-size: 14pt; font-weight: 500;">Notes</p></div>
-                <div class="panel-body">
-                    <ul class="col-12">
-                        {% for i in notes %}
-                        <li class="li-">{{i.notes}}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-            {% endif %}
-        </div>
-        <hr>
-        <form>
-            <div class="container-fluid">
-                <h4 style="text-align: center;">CONVERSION OF ORGANIC FERTILIZER</h4>
-                <form action="#" method="POST">
-                <div class="row">
-                    <div class="col-md-6">
-                        <label for="{{form.uom_qty.id_for_label}}" class="col-sm-12 col-form-label">{{form.uom_qty.label}} {%if form.uom_qty.field.required%}<i style="color:red">*</i>{%endif%}</label>
-                        {{form.uom_qty}}
-                    </div>
-                    <div class="col-md-6 padding_0">
-                        <label for="{{form.uom.id_for_label}}" class="col-sm-12 col-form-label">{{form.uom.label}} {%if form.uom.field.required%}<i style="color:red">*</i>{%endif%}</label>
-                        {{form.uom}}
-                    </div>
-                </div>
-    
-                <div class="row">
-                    <div class="col-md-6">
-                        <label for="{{form.land_qty.id_for_label}}" class="col-sm-12 col-form-label">{{form.land_qty.label}} {%if form.land_qty.field.required%}<i style="color:red">*</i>{%endif%}</label>
-                        {{form.land_qty}}
-                    </div>
-                    <div class="col-md-6 padding_0">
-                        <label for="{{form.land.id_for_label}}" class="col-sm-12 col-form-label">{{form.land.label}} {%if form.land.field.required%}<i style="color:red">*</i>{%endif%}</label>
-                        {{form.land}}
-                    </div>
-                </div>
-                </form>
-            </div>
-        </form>
-    </div>
-    <br><br><br>
-    <div class="container">
-        <div class="comment-section">
-            <h2>Comments</h2>
-            {%include 'app/messages.html'%}
-            <!-- Comment Form -->
-            {% if request.session.userid %}
-            <div class="comment-form">
-                <form action="{% url 'post-fertilizer-feedback' id %}" method="POST">
-                    {% csrf_token %}
-                    <textarea placeholder="Write your comment here..." rows="4" name="feedback"></textarea>
-        
-                    <div class="rating">
-                        <div class="stars">
-                            <input type="radio" id="star5" name="rating" value="5">
-                            <label for="star5">&#9733;</label>
-                            <input type="radio" id="star4" name="rating" value="4">
-                            <label for="star4">&#9733;</label>
-                            <input type="radio" id="star3" name="rating" value="3">
-                            <label for="star3">&#9733;</label>
-                            <input type="radio" id="star2" name="rating" value="2">
-                            <label for="star2">&#9733;</label>
-                            <input type="radio" id="star1" name="rating" value="1">
-                            <label for="star1">&#9733;</label>
-                        </div>
-                    </div>
 
-                    <button type="submit">Post Comment</button>
-                </form>
-            </div>
-            {% else %}
-            <div class="comment-form">
-                <p style="font-size: 12pt; text-align: center;"><a href="{% url 'signin' %}" style="color:green">Login</a> to post your comment</p>
-            </div>
-            {% endif %}
-    
-            <!-- Comments List -->
-            <ul class="comments-list" id="comment">
-                {% for i in feedback %}
-                <li class="comment">
-                    <div class="comment-author">
-                        {% if i.image.url %}
-                        <img src="{{i.image.url}}" alt="Profile Picture" class="comment-author-picture">
-                        {% else %}
-                        <img src="{{i.image}}" alt="Profile Picture" class="comment-author-picture">
-                        {% endif %}
-                        {{i.user.first_name}} {{i.user.last_name}}
+        <!-- Main Two-Column Layout -->
+        <div class="row">
+            <!-- Left Column -->
+            <div class="col-md-6">
+                <div class="panel panel-success">
+                    <div class="panel-heading text-center">
+                        <h4 style="font-weight: 700;">{{details.0.name}}</h4>
                     </div>
-                    <div class="comment-time">{{i.datetime_posted|date:'F d, Y h:i a'}}</div>
-                    <div class="comment-text">{{i.feedback}}</div>
-                    <div class="comment-rating">
-                        {% if i.rating == 1 %}
-                        <span class="stars">&#9733;</span>
-                        {% elif i.rating == 2 %}
-                        <span class="stars">&#9733;&#9733;</span>
-                        {% elif i.rating == 3 %}
-                        <span class="stars">&#9733;&#9733;&#9733;</span>
-                        {% elif i.rating == 4 %}
-                        <span class="stars">&#9733;&#9733;&#9733;&#9733;</span>
-                        {% elif i.rating == 5 %}
-                        <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
-                        {% endif %}
+                    <div class="panel-body">{{details.0.description}}</div>
+                </div>
+
+                <!-- Ingredients Section -->
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <p style="font-size: 14pt; font-weight: 500;">Ingredients</p>
                     </div>
-                </li>
-                {% endfor %}
-            </ul>
+                    <div class="panel-body">
+                        <ul>
+                            {% for i in ing %}
+                            <li>{{i.measure}} {{i.description}}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Procedures Section -->
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <p style="font-size: 14pt; font-weight: 500;">Procedures</p>
+                    </div>
+                    <div class="panel-body">
+                        <ol>
+                            {% for i in proc %}
+                            <li>{{i.procedure}}</li>
+                            {% endfor %}
+                        </ol>
+                    </div>
+                </div>
+
+                {% if notes %}
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <p style="font-size: 14pt; font-weight: 500;">Notes</p>
+                    </div>
+                    <div class="panel-body">
+                        <ul>
+                            {% for i in notes %}
+                            <li>{{i.notes}}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if source %}
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <p style="font-size: 14pt; font-weight: 500;">Sources</p>
+                    </div>
+                    <div class="panel-body">
+                        <ul>
+                            {% for i in source %}
+                            <li>{{i.source}} - <a href="{{i.link}}" target="_blank">{{i.link}}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if benefits %}
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <p style="font-size: 14pt; font-weight: 500;">Benefits</p>
+                    </div>
+                    <div class="panel-body">
+                        <ul>
+                            {% for i in benefits %}
+                            <li>{{i.benefit}}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Right Column -->
+            <div class="col-md-6">
+                <!-- Fertilizer Calculation -->
+                <div class="panel panel-success" style="min-height: 300px;">
+                    <div class="panel-heading text-center">
+                        <h4 style="font-weight: 700;">ORGANIC FERTILIZER CALCULATION</h4>
+                    </div>
+                    <div class="panel-body">
+                        <form action="#" method="POST">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="{{form.uom_qty.id_for_label}}" class="col-form-label">
+                                        {{form.uom_qty.label}} {% if form.uom_qty.field.required %}<i style="color:red">*</i>{% endif %}
+                                    </label>
+                                    {{form.uom_qty}}
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="{{form.uom.id_for_label}}" class="col-form-label">
+                                        {{form.uom.label}} {% if form.uom.field.required %}<i style="color:red">*</i>{% endif %}
+                                    </label>
+                                    {{form.uom}}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="{{form.land_qty.id_for_label}}" class="col-form-label">
+                                        {{form.land_qty.label}} {% if form.land_qty.field.required %}<i style="color:red">*</i>{% endif %}
+                                    </label>
+                                    {{form.land_qty}}
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="{{form.land.id_for_label}}" class="col-form-label">
+                                        {{form.land.label}} {% if form.land.field.required %}<i style="color:red">*</i>{% endif %}
+                                    </label>
+                                    {{form.land}}
+                                </div>
+                            </div>
+                        </form>
+                    </div>  
+                </div>
+                <div class="comment-section" style="min-height: 300px; margin-bottom: 50px;">
+                    <h2>Comments</h2>
+                    {% include 'app/messages.html' %}
+                    {% if request.session.userid %}
+                    <div class="comment-form">
+                        <form action="{% url 'post-fertilizer-feedback' id %}" method="POST">
+                            {% csrf_token %}
+                            <textarea placeholder="Write your comment here..." rows="4" name="feedback"></textarea>
+                            <div class="rating">
+                                <div class="stars" id="rating-stars">
+                                    <span class="star" data-value="1">&#9733;</span>
+                                    <span class="star" data-value="2">&#9733;</span>
+                                    <span class="star" data-value="3">&#9733;</span>
+                                    <span class="star" data-value="4">&#9733;</span>
+                                    <span class="star" data-value="5">&#9733;</span>
+                                </div>
+                                <input type="hidden" name="rating" id="rating-value">
+                            </div>
+                            <button type="submit">Post Comment</button>
+                        </form>
+                    </div>
+                    {% else %}
+                    <div class="comment-form">
+                        <p><a href="{% url 'signin' %}" style="color:green">Login</a> to post your comment</p>
+                    </div>
+                    {% endif %}
+                    
+                    <ul class="comments-list">
+                        {% for i in feedback %}
+                        <li class="comment">
+                            <div class="comment-author">
+                                {% if i.image.url %}
+                                <img src="{{ i.image.url }}" alt="Profile Picture" class="comment-author-picture">
+                                {% else %}
+                                <img src="{{ i.image }}" alt="Profile Picture" class="comment-author-picture">
+                                {% endif %}
+                                {{ i.user.first_name }} {{ i.user.last_name }}
+                            </div>
+                            <div class="comment-time">{{ i.datetime_posted|date:'F d, Y h:i a' }}</div>
+                            <div class="comment-text">{{ i.feedback }}</div>
+                            <div class="comment-rating">
+                                {% if i.rating == 1 %}
+                                <span class="stars">&#9733;</span>
+                                {% elif i.rating == 2 %}
+                                <span class="stars">&#9733;&#9733;</span>
+                                {% elif i.rating == 3 %}
+                                <span class="stars">&#9733;&#9733;&#9733;</span>
+                                {% elif i.rating == 4 %}
+                                <span class="stars">&#9733;&#9733;&#9733;&#9733;</span>
+                                {% elif i.rating == 5 %}
+                                <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                                {% endif %}
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                
+                    <!-- Pagination Controls -->
+                    <nav aria-label="Page navigation" style="display: flex; justify-content: center; align-items: center;">
+                        <ul class="pagination" style="list-style: none; justify-content: center; gap: 8px;">
+                            {% if feedback.has_previous %}
+                            <li class="page-item" style="margin-right: 5px;">
+                                <a class="page-link" href="?page=1#fertilizer" style="padding: 6px 10px; font-size: 14px; border: 1px solid #ddd; color: #5cb85c; text-decoration: none; background-color: white; transition: background-color 0.3s ease;" aria-label="First">&laquo; First</a>
+                            </li>
+                            <li class="page-item" style="margin-right: 5px;">
+                                <a class="page-link" href="?page={{ feedback.previous_page_number }}#fertilizer" style="padding: 6px 10px; font-size: 14px; border: 1px solid #ddd; color: #5cb85c; text-decoration: none; background-color: white; transition: background-color 0.3s ease;" aria-label="Previous">Previous</a>
+                            </li>
+                            {% else %}
+                            <li class="page-item disabled" style="margin-right: 5px;">
+                                <a class="page-link" style="padding: 6px 10px; font-size: 14px; border: 1px solid #ddd; color: #ccc; cursor: not-allowed;" aria-disabled="true">&laquo; First</a>
+                            </li>
+                            <li class="page-item disabled" style="margin-right: 5px;">
+                                <a class="page-link" style="padding: 6px 10px; font-size: 14px; border: 1px solid #ddd; color: #ccc; cursor: not-allowed;" aria-disabled="true">Previous</a>
+                            </li>
+                            {% endif %}
+                    
+                            <!-- Middle Pages -->
+                            {% for i in feedback.paginator.page_range %}
+                            {% if i == feedback.number %}
+                            <li class="page-item active">
+                                <span class="page-link" style="padding: 6px 10px; font-size: 14px; background-color: #5cb85c; border-color: #73c273; color: white; cursor: default;">{{ i }}</span>
+                            </li>
+                            {% elif i > feedback.number|add:'-3' and i < feedback.number|add:'3' %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ i }}#fertilizer" style="padding: 6px 10px; font-size: 14px; border: 1px solid #ddd; color: #5cb85c; text-decoration: none; background-color: white; transition: background-color 0.3s ease;">{{ i }}</a>
+                            </li>
+                            {% endif %}
+                            {% endfor %}
+                    
+                            <!-- Next & Last -->
+                            {% if feedback.has_next %}
+                            <li class="page-item" style="margin-left: 5px;">
+                                <a class="page-link" href="?page={{ feedback.next_page_number }}#fertilizer" style="padding: 6px 10px; font-size: 14px; border: 1px solid #ddd; color: #5cb85c; text-decoration: none; background-color: white; transition: background-color 0.3s ease;" aria-label="Next">Next</a>
+                            </li>
+                            <li class="page-item" style="margin-left: 5px;">
+                                <a class="page-link" href="?page={{ feedback.paginator.num_pages }}#fertilizer" style="padding: 6px 10px; font-size: 14px; border: 1px solid #ddd; color: #5cb85c; text-decoration: none; background-color: white; transition: background-color 0.3s ease;" aria-label="Last">Last &raquo;</a>
+                            </li>
+                            {% else %}
+                            <li class="page-item disabled" style="margin-left: 5px;">
+                                <a class="page-link" style="padding: 6px 10px; font-size: 14px; border: 1px solid #ddd; color: #ccc; cursor: not-allowed;" aria-disabled="true">Next</a>
+                            </li>
+                            <li class="page-item disabled" style="margin-left: 5px;">
+                                <a class="page-link" style="padding: 6px 10px; font-size: 14px; border: 1px solid #ddd; color: #ccc; cursor: not-allowed;" aria-disabled="true">Last &raquo;</a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </nav>                                   
+                </div>
+            </div>
         </div>
     </div>
- </div>
+</div>
+<style>
+    .stars {
+        display: flex;
+        gap: 5px;
+        cursor: pointer;
+    }
+
+    .stars .star {
+        font-size: 24px;
+        color: #ccc;
+        transition: color 0.2s ease;
+    }
+
+    .stars .star.selected {
+        color: gold;
+    }
+
+    .stars .star:hover ~ .star {
+        color: #ccc;
+    }
+
+    .stars .star:hover {
+        color: gold;
+    }
+    .form-control {
+        width: 100%;
+    }
+
+    .nice-select {
+        height: 55%;
+        width: 100%;
+    }
+
+    @media (max-width: 768px) {
+        .col-md-6 {
+            width: 100%;
+        }
+    }
+
+    @media (max-width: 476px) {
+        .form-control {
+            width: 100%;
+        }
+
+        .nice-select {
+            width: 50%;
+        }
+    }
+
+</style>
+
 {% endblock %}
 
 {% block fertilizer_script %}
@@ -303,5 +432,24 @@
          }
       });
    })
+
+document.addEventListener("DOMContentLoaded", () => {
+    const stars = document.querySelectorAll("#rating-stars .star");
+    const ratingValue = document.getElementById("rating-value");
+
+    stars.forEach((star) => {
+        star.addEventListener("click", () => {
+            const value = star.getAttribute("data-value");
+            ratingValue.value = value;
+
+            // Reset all stars
+            stars.forEach(s => s.classList.remove("selected"));
+            // Highlight up to the selected star
+            for (let i = 0; i < value; i++) {
+                stars[i].classList.add("selected");
+            }
+        });
+    });
+});
 </script>
 {% endblock %}

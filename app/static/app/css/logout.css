@@ -1,0 +1,122 @@
+/* Style for custom popup */
+#custom-popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    color: #333;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    z-index: 1000;
+    width: 400px;
+}
+
+/* Style for the overlay */
+#popup-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+/* Icon placeholder at the top */
+#custom-popup img {
+    width: 150px;
+    height: 150px;
+    margin: 0 auto 15px;
+    background-size: contain;
+}
+
+/* Headline */
+#custom-popup h2 {
+    font-size: 24px;
+    margin: 0 0 10px;
+    color: #333;
+}
+
+/* Paragraph text */
+#custom-popup p {
+    font-size: 16px;
+    margin-bottom: 20px;
+    color: #666;
+}
+
+/* Button styling */
+.popup-button {
+    margin: 10px 5px;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 100px;
+}
+
+/* "Yes" button */
+.popup-confirm {
+    background-color: #0a9734;
+    color: white;
+    border: none;
+}
+
+/* "No" button */
+.popup-cancel {
+    background-color: white;
+    color: #333;
+    border: 1px solid #ccc;
+}
+@media (max-width: 768px) {
+    #custom-popup {
+        padding: 15px;
+    }
+
+    #custom-popup img {
+        width: 40%;
+        max-width: 300px;
+    }
+
+    #custom-popup h2 {
+        font-size: 1.6rem;
+    }
+
+    #custom-popup p {
+        font-size: 2rem;
+    }
+
+    .popup-button {
+        font-size: 1.5rem;
+        padding: 8px 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    #custom-popup {
+        width: 95%;
+        padding: 10px;
+    }
+
+    #custom-popup img {
+        width: 50%;
+        max-width: 300px;
+    }
+
+    #custom-popup h2 {
+        font-size: 1.4rem;
+    }
+
+    #custom-popup p {
+        font-size: 1.8rem;
+    }
+
+    .popup-button {
+        font-size: 1.5rem;
+        padding: 8px 12px;
+    }
+}

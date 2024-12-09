@@ -1,144 +1,273 @@
 {% extends 'app/base.html' %}
 {% load static %}
+{% load custom_filters%}
+
+
 {% block choose %}
+
 <div class="choose_section layout_padding">
-    <div class="container">
-       <h1 class="choose_taital">Organic Products - Pesticide</h1>
-       <h4 style="text-align: center;">Instructions</h4>
-       <p style="font-style: italic; font-size: 12pt;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-       <div class="container" id="pesticide">
-         <form id="pesticide-form" action="{% url 'pesticide' %}#pesticide" method="POST">
-            {%include 'app/messages.html'%}
+   <div class="container">
+      <h1 class="choose_taital" id="title-text" style="padding-top: 40px;">Organic Products - Pesticides</h1>
+
+        <!-- Language Selection Section -->
+        <div style="margin: 0 auto; width: 80%; text-align: left; margin-bottom: 20px;">
+            <label for="language-select" style="font-weight: 600; font-size: 18px; color: #007700;">
+                Select Language for Instructions:
+            </label>
+            <select id="language-select" style="background-color: #7cc568; color: white; padding: 10px 15px; border: none; border-radius: 5px; font-size: 16px; cursor: pointer;" onchange="translateText()">
+                <option value="en">English</option>
+                <option value="tl">Filipino</option>
+                <option value="bcl">Bikol</option>
+            </select>
+        </div>
+
+        <!-- Instruction Section -->
+        <div style="margin: 0 auto; width: 80%; text-align: left;">
+            <h4 id="instruction-title" style="color: #009900; font-size: 18px; font-weight: bold; margin-bottom: 10px;">
+                Instruction:
+            </h4>
+            <p id="instruction-text" style="font-style: italic; font-size: 15px; text-align: justify; line-height: 1.6; margin: 0 auto; color: #333;">
+                Use the search bar to look up any ingredient you have at home. Simply type the ingredient name, and if it’s supported, the system will display related and recommended options. If no results appear, it means the ingredient is not available in the system. This feature helps you quickly find useful ingredients for your needs.
+                <strong>Note:</strong> You can only use English words to search for an ingredient. 
+            </p>
+        </div>
+
+      <!-- Search Form -->
+      <div class="container" id="fertilizer" style="display: flex; justify-content: center; align-items: center; padding: 20px;">
+        <form id="fertilizer-form" onsubmit="return validateSearch()" action="{% url 'pesticide' %}#pesticide" method="POST" style="width: 100%; max-width: 700px;">
             {% csrf_token %}
-            <div class="form-group">
-                <!-- <label for="{{form.search.id_for_label}}" class="col-form-label">{{form.search.label}} {%if form.search.field.required%}<i style="color:red">*</i>{%endif%}</label>
-                {{form.search}} -->
-                <input type="text" id="search-box" name="search" class="form-control" autocomplete="off" placeholder="Search...">
-               <div id="suggestions-box" class="suggestions" style="display: none; background-color: #fff;"></div>
+            <div class="search-container" style="display: flex; align-items: center; border: 2px solid #7cc568; border-radius: 30px; overflow: hidden; background-color: white; padding: 4px; width: 100%; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                <input type="text" id="search-box" name="search" class="form-control" autocomplete="off" placeholder="Type to search..." required
+                    style="flex-grow: 1; border: none; outline: none; padding: 10px; font-size: 16px; min-width: 0;">
+                <button type="button" class="search-icon-box" style="padding: 10px; cursor: pointer; background: transparent; border: none;">
+                    <i class="fa fa-search" aria-hidden="true" style="font-size: 20px; color: #7cc568;"></i>
+                </button>
             </div>
+            <div id="suggestions-box" class="suggestions" style="display: none; background-color: #fff; width: 100%;"></div>
         </form>
-       </div>
-       <div class="container">
-         {% if list_ %}
-         <h5 style="text-align: left; font-weight: bold; font-size: 14pt;">Suggestion from admin</h5>
-         <table class="table table-hover" style="width: 100%; text-align: justify;">
-            <thead>
-               <tr style="background-color: #defde0;">
-                  <th>Pesticide</th>
-                  <th>Description</th>
-               </tr>
-            </thead>
-            <tbody>
-               {% for i in list_ %}
-               <tr onclick="window.location.href='/pesticide-details/{{i.pesticide_id}}#pesticide'" style="cursor: pointer;">
-                  <td>{{i.pesticide__name}}</td>
-                  <td>{{i.pesticide__description}}</td>
-               </tr>
-               {% endfor %}
-            </tbody>
-         </table>
-         {% if pesticide %}
-         <h5 style="text-align: left; font-weight: bold; font-size: 14pt;">Suggestion base from the ratings</h5>
-         <table class="table table-hover" style="width: 100%; text-align: justify;">
-            <thead>
-               <tr style="background-color: #defde0;">
-                  <th>Pesticide</th>
-                  <th>Rating</th>
-               </tr>
-            </thead>
-            <tbody>
-               {% for i in pesticide %}
-               <tr onclick="window.location.href='/pesticide-details/{{i.pesticide_id}}#pesticide'" style="cursor: pointer;">
-                  <td>{{i.pesticide_name}}</td>
-                  <td>
-                     {% if i.rating == 1 %}
-                        <span class="stars">&#9733;</span>
-                     {% elif i.rating == 2 %}
-                        <span class="stars">&#9733;&#9733;</span>
-                     {% elif i.rating == 3 %}
-                        <span class="stars">&#9733;&#9733;&#9733;</span>
-                     {% elif i.rating == 4 %}
-                        <span class="stars">&#9733;&#9733;&#9733;&#9733;</span>
-                     {% elif i.rating == 5 %}
-                        <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
-                     {% endif %}
-                  </td>
-               </tr>
-               {% endfor %}
-            </tbody>
-         </table>
-         {% endif %}
-         <br>
-         <nav aria-label="Page navigation example">
+      </div>
+      <br><br>
+
+        {% if messages %}
+        <div style="margin-bottom: 20px; display: flex; align-items: center; justify-content: center; text-align: center; padding: 10px; background-color: #ffe5e5; color: #d9534f; border: 1px solid #d9534f; border-radius: 8px;">
+            {% for message in messages %}
+                <p style="margin: 0;">{{ message }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+        <div class="container" style="display: flex; flex-wrap: wrap; justify-content: flex-start; gap: 20px;">
+            <!-- Left Column: Recommended from Admin -->
+            <div style="flex: 1; min-width: 300px; max-width: 48%; box-sizing: border-box;">
+                {% if list_ %}
+                <h5 style="text-align: center; font-weight: bold; font-size: 16pt;">Recommended from Admin</h5>
+                <div class="admin-cards">
+                    {% for i in list_ %}
+                    <div class="admin-card" 
+                         onclick="window.location.href='/pesticide-details/{{ i.pesticide_id }}#pesticide'" 
+                         style="cursor: pointer; border: 1px solid #ccc; padding: 30px; border-radius: 8px; margin-bottom: 30px; margin-right: 20px;"
+                         onmouseover="this.style.backgroundColor='#dcffe4'; this.style.transform='scale(1.05)'; this.style.transition='transform 0.3s ease, background-color 0.3s';"
+                         onmouseout="this.style.backgroundColor=''; this.style.transform='scale(1)';">
+                        <h4 style="font-weight: bold; font-size: 11pt; text-transform: uppercase;">{{ i.pesticide__name }}</h4>
+                        <p style="text-align: justify;">{{ i.pesticide__description }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+        
+            <!-- Right Column: Suggestions based on Ratings -->
+            <div style="flex: 1; min-width: 300px; max-width: 48%; box-sizing: border-box;">
+                {% if pesticide %}
+                <h5 style="text-align: center; font-weight: bold; font-size: 16pt;">Suggestions based on Ratings</h5>
+                <div style="display: flex; flex-wrap: wrap; justify-content: space-around; gap: 10px;">
+                    {% for i in pesticide %}
+                    <div class="rating-card" 
+                         onclick="window.location.href='/pesticide-details/{{ i.pesticide_id }}#pesticide'" 
+                         style="cursor: pointer; text-align: center; margin: 10px; flex: 0 0 calc(50% - 20px); box-sizing: border-box; max-width: 150px; margin-right: 20px;"
+                         onmouseover="this.style.backgroundColor='#f0f0f0'; this.style.transform='scale(1.05)'; this.style.transition='transform 0.3s ease, background-color 0.3s';"
+                         onmouseout="this.style.backgroundColor=''; this.style.transform='scale(1)';">
+                        {% if i.image %}
+                        <img src="{{ i.image }}" alt="{{ i.pesticide_name }}" style="width: 100%; border-radius: 8px;">
+                        {% else %}
+                        <img src="/static/images/default-pesticide.png" alt="Default Image" style="width: 100%; border-radius: 8px;">
+                        {% endif %}
+                        <h4 style="font-weight: bold; font-size: 11pt; margin-top: 8px; text-transform: uppercase;">{{ i.pesticide_name }}</h4>
+                        <div class="stars" style="color: #FFD700; font-size: 30px; margin: 0;">
+                            {{ i.rating|stars|safe }}
+                        </div>
+                        <!-- Show Total Reviews and Rating -->
+                        <div style="font-size: 14px; margin-top: 5px;">
+                            Total Reviews: {{ i.total_reviews }} <br>
+                            Total Rating: {{ i.rating|floatformat:1 }} / 5.0
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    
+    
+    
+        <!-- Pagination (Outside the Border Box) -->
+        {% if list_.paginator.num_pages > 1 %}
+        <nav aria-label="Page navigation" style="display: flex; justify-content: center;">
             <ul class="pagination justify-content-center">
-               {% if list.has_previous %}
-                  <li class="page-item">
-                        <a class="page-link" href="?page=1#pesticide" aria-label="First">
-                           <span aria-hidden="true">&laquo; first</span>
-                        </a>
-                  </li>
-                  <li class="page-item">
-                        <a class="page-link" href="?page={{ list.previous_page_number }}#pesticide" aria-label="Previous">
-                           <span aria-hidden="true">previous</span>
-                        </a>
-                  </li>
-               {% else %}
-                  <li class="page-item disabled">
-                        <a class="page-link" aria-label="First">
-                           <span aria-hidden="true">&laquo; first</span>
-                        </a>
-                  </li>
-                  <li class="page-item disabled">
-                        <a class="page-link" aria-label="Previous">
-                           <span aria-hidden="true">previous</span>
-                        </a>
-                  </li>
-               {% endif %}
-      
-               <!-- Range of page numbers -->
-               {% for i in list.paginator.page_range %}
-                  {% if list.number == i %}
-                        <li class="page-item active" aria-current="page">
-                           <a class="page-link" href="#">{{ i }}</a>
-                        </li>
-                  {% elif i > list.number|add:'-3' and i < list.number|add:'3' %}
-                        <li class="page-item">
-                           <a class="page-link" href="?page={{ i }}#pesticide">{{ i }}</a>
-                        </li>
-                  {% endif %}
-               {% endfor %}
-      
-               {% if list.has_next %}
-                  <li class="page-item">
-                        <a class="page-link" href="?page={{ list.next_page_number }}#pesticide" aria-label="Next">
-                           <span aria-hidden="true">next</span>
-                        </a>
-                  </li>
-                  <li class="page-item">
-                        <a class="page-link" href="?page={{ list.paginator.num_pages }}#pesticide" aria-label="Last">
-                           <span aria-hidden="true">last &raquo;</span>
-                        </a>
-                  </li>
-               {% else %}
-                  <li class="page-item disabled">
-                        <a class="page-link" aria-label="Next">
-                           <span aria-hidden="true">next</span>
-                        </a>
-                  </li>
-                  <li class="page-item disabled">
-                        <a class="page-link" aria-label="Last">
-                           <span aria-hidden="true">last &raquo;</span>
-                        </a>
-                  </li>
-               {% endif %}
+                {% if list_.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1#pesticide" style="color: #5cb85c;" aria-label="First">&laquo; First</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ list_.previous_page_number }}#pesticide" style="color: #5cb85c;" aria-label="Previous">Previous</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" aria-disabled="true">&laquo; First</a>
+                </li>
+                <li class="page-item disabled">
+                    <a class="page-link" aria-disabled="true">Previous</a>
+                </li>
+                {% endif %}
+        
+                <!-- Middle Pages -->
+                {% for i in list_.paginator.page_range %}
+                {% if i == list_.number %}
+                <li class="page-item active" >
+                    <a class="page-link" href="#" style="background-color: #5cb85c; border-color: #73c273;">{{ i }}</a>
+                </li>
+                {% elif i > list_.number|add:'-3' and i < list_.number|add:'3' %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ i }}#pesticide" style="color: #5cb85c;" >{{ i }}</a>
+                </li>
+                {% endif %}
+                {% endfor %}
+        
+                <!-- Next & Last -->
+                {% if list_.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ list_.next_page_number }}#pesticide" style="color: #5cb85c;" aria-label="Next">Next</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ list_.paginator.num_pages }}#pesticide" style="color: #5cb85c;" aria-label="Last">Last &raquo;</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" aria-disabled="true">Next</a>
+                </li>
+                <li class="page-item disabled">
+                    <a class="page-link" aria-disabled="true">Last &raquo;</a>
+                </li>
+                {% endif %}
             </ul>
-      </nav> 
-      {% endif %}
-       </div>
-    </div>
- </div>
+        </nav>        
+        {% endif %} 
+   </div>
+</div>
+
+<style>
+    .nice-select {
+            height: 55%;
+            width: 20%;
+    }
+
+    @media (max-width: 476px) {
+        .nice-select {
+            width: 50%;
+        }
+    }
+</style>
 {% endblock %}
 
 {% block pesticide_script %}
-<script src="{% static 'app/js/pesticide.js' %}"></script>
+<script>
+function translateText() {
+    const languageSelect = document.getElementById("language-select");
+    const language = languageSelect.value;
+
+    // Store the selected language in localStorage
+    localStorage.setItem("selectedLanguage", language);
+
+    const translations = {
+        en: {
+            title: "<strong>Organic Products - Pesticides</strong>",
+            instructionTitle: "<strong>Instruction:</strong>",
+            instructionText: "<strong>Use the search bar</strong> to look up any ingredient you have at home. <strong>Type the ingredient name</strong>, and if it's supported, the system will display related and recommended options. <strong>If no results appear</strong>, it means the ingredient isn’t available in the system. This feature helps you quickly find useful ingredients for your needs.<br><br> <strong>Note:</strong> You can only use English words to search for an ingredient."
+        },
+        tl: {
+            title: "<strong>Organic Products - Pesticides</strong>",
+            instructionTitle: "<strong>Panuto:</strong>",
+            instructionText: "<strong>Gamitin ang search bar</strong> upang maghanap ng anumang sangkap na mayroon ka sa bahay. <strong>I-type lamang ang pangalan ng sangkap</strong>, at ipapakita ng system ang mga kabilang at inirerekomendang opsyon. <strong>Kung walang lumabas na resulta</strong>, nangangahulugan na ang sangkap ay hindi kabilang o wala sa datos ng system. Ito ay makatutulong saiyo na mapabilis ang paghahanap ng mga sangkap na kapaki-pakinabang sa iyong pangangailangan.<br><br> <strong>Tandaan:</strong> Salitang Ingles lamang ang maaaring gamitin sa paghahanap ng isang sangkap."
+        },
+        bcl: {
+            title: "<strong>Organic Products - Pesticides</strong>",
+            instructionTitle: "<strong>Susunudon:</strong>",
+            instructionText: "<strong>Gamiton an search bar</strong> para maghanap nin mga sangkap na aram mong ugwa ka sa harong. <strong>I-type an ngaran kan sangkap</strong>, asin kung yaon ito, ipapahiling kan system an mga kaugnay asin inirerekomendang opsyon. <strong>Kung dai magkaigwa nin resulta</strong>, ibig sabihon na dai ini parte kan datos kan sistema. Makakatabang ini para mapadali an saimong paghanap nin mga sangkap na pwedeng magamit para sa saimong pangangaipo. <br><br> <strong>Pagirumdom:</strong> Ingles sana an tataramon na gagamiton sa paghahanap nin sarong sangkap."
+        }
+    };
+
+    // Update text content based on selected language
+    document.getElementById("title-text").innerHTML = translations[language].title;
+    document.getElementById("instruction-title").innerHTML = translations[language].instructionTitle;
+    document.getElementById("instruction-text").innerHTML = translations[language].instructionText;
+}
+
+   // Function to load language preference on page load
+   function loadLanguagePreference() {
+      const savedLanguage = localStorage.getItem("selectedLanguage") || "en"; // Default to English if no preference is set
+      document.getElementById("language-select").value = savedLanguage;
+      translateText(); // Update text based on the saved language
+   }
+
+   document.addEventListener("DOMContentLoaded", function() {
+      loadLanguagePreference(); // Load language preference when the page is loaded
+
+      // Add event listener to the language dropdown
+      document.getElementById("language-select").addEventListener("change", translateText);
+   });
+
+   $(document).ready(function() {
+      $("#search-box").on('keyup', function() {
+         let query = $(this).val();
+
+         if (query.length > 0) {
+            $.ajax({
+               url: '/search-suggestions-pest',  // The URL for the AJAX request
+               data: {
+                  'q': query
+               },
+               dataType: 'json',
+               success: function(data) {
+                  let suggestionsBox = $("#suggestions-box");
+                  suggestionsBox.empty();
+                  if (data.suggestion.length > 0) {
+                     suggestionsBox.show();
+                     suggestionsBox.append('<div class="suggestion-item" style="border-bottom: 1px solid #ccc; padding-top: 1%; padding-bottom: 1%; padding-left: 1%; font-size: 12pt; text-align:center; color: green;">Ingredients</div>');
+                     $.each(data.suggestion, function(index, item) {
+                        suggestionsBox.append('<div class="suggestion-item" style="border-bottom: 1px solid #ccc; padding-top: 1%; padding-bottom: 1%; padding-left: 1%; font-size: 12pt; cursor: pointer;">' + item.description + '</div>');
+                     });
+
+                     if (data.pesticides.length > 0) {
+                        suggestionsBox.append('<div class="suggestion-item" style="border-bottom: 1px solid #ccc; padding-top: 1%; padding-bottom: 1%; padding-left: 1%; font-size: 12pt; text-align:center; color: green;">Pesticides</div>');
+                        $.each(data.pesticides, function(index, item) {
+                           suggestionsBox.append('<div class="suggestion-item" style="border-bottom: 1px solid #ccc; padding-top: 1%; padding-bottom: 1%; padding-left: 1%; font-size: 12pt; cursor: pointer;">' + item.name + '</div>');
+                        });
+                     }
+                  } else {
+                     suggestionsBox.hide();
+                  }
+               }
+            });
+         } else {
+            $("#suggestions-box").hide();
+         }
+      });
+
+      // Optional: Handle clicking on a suggestion
+      $(document).on('click', '.suggestion-item', function() {
+         $("#search-box").val($(this).text());
+         $("#suggestions-box").hide();
+      });
+   });
+</script>
+
 {% endblock %}

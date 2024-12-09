@@ -7,6 +7,7 @@ from django.utils import timezone
 import uuid
 
 class Profile(models.Model):
+    image = models.ImageField(upload_to='profile_pictures/', default='default-profile.png')
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     middlename = models.CharField(max_length=150, null=True, blank=True)
     suffix= models.CharField(max_length=10, null=True, blank=True)
@@ -74,13 +75,36 @@ class PesticideFeedback(models.Model):
     datetime_posted = models.DateTimeField()
 
 class PesticideConversion(models.Model):
-    convert_id = models.UUIDField(primary_key=True, editable=False, unique=True, default=uuid.uuid4)
+    convert_id = models.UUIDField(
+        primary_key=True, editable=False, unique=True, default=uuid.uuid4
+    )
     pesticide = models.ForeignKey(Pesticides, on_delete=RESTRICT)
-    uom_qty = models.IntegerField(default=0)
-    uom = models.ForeignKey(UOM, on_delete=RESTRICT)
-    land_qty = models.IntegerField(default=0)
-    land = models.ForeignKey(LandMeasure, on_delete=RESTRICT)
+    uom_qty = models.IntegerField(
+        default=0, 
+        verbose_name="Unit of measurement quantity"
+    )
+    uom = models.ForeignKey(
+        UOM, 
+        on_delete=RESTRICT, 
+        verbose_name="Unit of measurement"
+    )
+    land_qty = models.IntegerField(
+        default=0, 
+        verbose_name="Land quantity"
+    )
+    land = models.ForeignKey(
+        LandMeasure, 
+        on_delete=RESTRICT, 
+        verbose_name="Land measurement"
+    )
     status = models.BooleanField(default=True)
+
+    class Meta:
+        verbose_name = "Pesticide Conversion"
+        verbose_name_plural = "Pesticide Conversions"
+
+
+
 
 class PesticideSource(models.Model):
     source_id = models.UUIDField(primary_key=True, editable=False, unique=True, default=uuid.uuid4)
@@ -161,12 +185,38 @@ class FertilizerFeedback(models.Model):
 
 class FertilizerConversion(models.Model):
     convert_id = models.UUIDField(primary_key=True, editable=False, unique=True, default=uuid.uuid4)
-    fertilizer = models.ForeignKey(Fertilizers, on_delete=RESTRICT)
-    uom_qty = models.IntegerField(default=0)
-    uom = models.ForeignKey(UOM, on_delete=RESTRICT)
-    land_qty = models.IntegerField(default=0)
-    land = models.ForeignKey(LandMeasure, on_delete=RESTRICT)
-    status = models.BooleanField(default=True)
+    fertilizer = models.ForeignKey('Fertilizers', on_delete=RESTRICT)
+    
+    uom_qty = models.IntegerField(
+        default=0,
+        verbose_name="Unit of Measurement quantity",
+        help_text="Quantity in the unit of measure"
+    )
+    uom = models.ForeignKey(
+        'UOM',
+        on_delete=RESTRICT,
+        verbose_name="Unit of Measurement"
+    )
+    land_qty = models.IntegerField(
+        default=0,
+        verbose_name="Land quantity",
+        help_text="Quantity in terms of land area"
+    )
+    land = models.ForeignKey(
+        'LandMeasure',
+        on_delete=RESTRICT,
+        verbose_name="Land Measurement"
+    )
+    
+    status = models.BooleanField(
+        default=True,
+        verbose_name="Active Status",
+        help_text="Indicates whether the conversion is active"
+    )
+    
+    class Meta:
+        verbose_name = "Fertilizer Conversion"
+        verbose_name_plural = "Fertilizer Conversions"
 
 class FertilizerSource(models.Model):
     source_id = models.UUIDField(primary_key=True, editable=False, unique=True, default=uuid.uuid4)
@@ -200,7 +250,6 @@ class Appointments(models.Model):
     event_type = models.CharField(max_length=150)
     start = models.DateField()
     end = models.DateField()
-    duration = models.CharField(max_length=50, null=True, blank=True)
     notes = models.CharField(max_length=250)
     status = models.CharField(max_length=50, default='PENDING')
     date_created = models.DateTimeField()
@@ -226,3 +275,4 @@ class Announcement(models.Model):
     body = models.CharField(max_length=1000)
     sent_datetime = models.DateTimeField(default=timezone.now)
     created_by = models.ForeignKey(User, on_delete=RESTRICT, related_name='created_by_%(class)s')
+    

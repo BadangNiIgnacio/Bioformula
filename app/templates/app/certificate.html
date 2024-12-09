@@ -1,37 +1,236 @@
 {% extends 'app/base.html' %}
 {% load static %}
 {% block choose %}
-<div class="choose_section layout_padding">
-    <div class="container">
-       <h1 class="choose_taital" id="reservation">Create Certificate</h1>
-       <div class="container">
+<link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+<script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+
+<div class="choose_section layout_padding" id="cert">
+    <div class="container form-container">
+        <h1 class="form-title">CREATE CERTIFICATE</h1>
         <form action="{% url 'certificate' %}" method="POST">
-            {%include 'app/messages.html'%}
+            {% include 'app/messages.html' %}
             {% csrf_token %}
-            <div class="form-group">
-                <label for="{{form.name.id_for_label}}" class="col-sm-12 col-form-label">{{form.name.label}} {%if form.name.field.required%}<i style="color:red">*</i>{%endif%}</label>
-                {{form.name}}
-              </div>
-            <div class="form-group">
-                <label for="{{form.email.id_for_label}}" class="col-sm-12 col-form-label">{{form.email.label}} {%if form.email.field.required%}<i style="color:red">*</i>{%endif%}</label>
-                {{form.email}}
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="{{ form.name.id_for_label }}">{{ form.name.label }} {% if form.name.field.required %}<span class="required">*</span>{% endif %}</label>
+                    {{ form.name }}
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="{{ form.email.id_for_label }}">{{ form.email.label }} {% if form.email.field.required %}<span class="required">*</span>{% endif %}</label>
+                    {{ form.email }}
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="{{ form.signatory.id_for_label }}">{{ form.signatory.label }} {% if form.signatory.field.required %}<span class="required">*</span>{% endif %}</label>
+                    {{ form.signatory }}
+                </div>
             </div>
-            <div class="form-group">
-                <label for="{{form.inclusive_date.id_for_label}}" class="col-sm-12 col-form-label">{{form.inclusive_date.label}} {%if form.inclusive_date.field.required%}<i style="color:red">*</i>{%endif%}</label>
-                {{form.inclusive_date}}
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                    <label for="details">Details <span class="required">*</span></label>
+                    <div id="quill-editor" style="height: 200px; border: 1px solid #ccc;"></div>
+                    <textarea name="details" id="details" hidden></textarea>
+                </div>
+                
             </div>
-            <div class="form-group"></div>
-                <label for="{{form.signatory.id_for_label}}" class="col-sm-12 col-form-label">{{form.signatory.label}} {%if form.signatory.field.required%}<i style="color:red">*</i>{%endif%}</label>
-                {{form.signatory}}
+            <div class="form-button">
+                <button class="btn btn-success submit-btn" type="submit">Send Certificate</button>
             </div>
-            <div class="form-group">
-                <label for="{{form.details.id_for_label}}" class="col-sm-12 col-form-label">{{form.details.label}} {%if form.details.field.required%}<i style="color:red">*</i>{%endif%}</label>
-                {{form.details}}
-            </div>
-            
-            <button class="btn btn-success" type="submit">Send Certificate</button>
         </form>
-       </div>
     </div>
- </div>
+</div>
+<style>
+    /* Form Container */
+    .form-container {
+        max-width: 900px;
+        background-color: #f9fffa; /* Light greenish-white background */
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        margin: 50px auto;
+    }
+
+    /* Form Title */
+    .form-title {
+        text-align: center;
+        color: #164006; /* Dark green */
+        font-size: 40px;
+        font-weight: bold;
+        margin-bottom: 30px;
+    }
+
+    /* Form Row */
+    .form-row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 20px;
+    }
+
+    .form-group {
+        flex: 1;
+    }
+
+    /* Input Fields and Labels */
+    label {
+        font-weight: bold;
+        font-size: 14px;
+        color: #333;
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    input,
+    textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+
+    textarea {
+        resize: none;
+        height: 100px;
+    }
+
+    input:focus,
+    textarea:focus {
+        border-color: #28a745;
+        outline: none;
+        box-shadow: 0 0 5px rgba(40, 167, 69, 0.2);
+    }
+
+    /* Submit Button */
+    .form-button {
+        text-align: left;
+        margin-top: 20px;
+    }
+
+    .submit-btn {
+        padding: 10px 20px;
+        background-color: #28a745;
+        color: white;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .submit-btn:hover {
+        background-color: #218838;
+    }
+
+    /* Required Field Indicator */
+    .required {
+        color: red;
+    }
+
+    #quill-editor {
+        background-color: #f9fffa;
+        padding: 10px;
+        border-radius: 4px;
+    }
+
+    .ql-toolbar {
+        display: flex;
+        justify-content: start;
+        background-color: #f9fffa;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 5px;
+    }
+
+    .ql-toolbar .ql-formats {
+        display: flex;
+        align-items: center;
+    }
+
+    .ql-align-center {
+        text-align: center;
+    }
+
+    .ql-align-right {
+        text-align: right;
+    }
+
+    .ql-align-justify {
+        text-align: justify;
+    }
+
+    .ql-align-left {
+        text-align: left;
+    }
+
+    /* Responsive Design for Smaller Screens */
+    @media (max-width: 768px) {
+        .form-container {
+            width: 350px;
+            padding: 20px;
+            margin: 20px auto;
+        }
+
+        .form-title {
+            font-size: 30px;
+        }
+
+        .form-row {
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .form-group {
+            flex: none;
+            width: 100%;
+        }
+
+        .submit-btn {
+            width: 100%;
+            font-size: 18px;
+        }
+
+        #quill-editor {
+            height: 150px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .form-title {
+            font-size: 30px;
+        }
+
+        .submit-btn {
+            font-size: 16px;
+            padding: 12px 18px;
+        }
+    }
+</style>
+
+<script>
+    // Initialize Quill editor
+    var quill = new Quill('#quill-editor', {
+        theme: 'snow',
+        placeholder: 'Enter the details...',
+        modules: {
+            toolbar: [
+                ['bold', 'italic', 'underline'],               
+                [{ 'list': 'ordered' }, { 'list': 'bullet' }], 
+                [{ 'align': '' }, { 'align': 'center' }, { 'align': 'justify' }, { 'align': 'right' },], 
+            ]
+        }
+    });
+
+    // Copy Quill content to hidden textarea on form submit
+    document.querySelector('form').onsubmit = function() {
+        var details = document.querySelector('#details');
+        details.value = quill.root.innerHTML;
+    };
+
+    // Test Quill alignment functionality
+    quill.on('text-change', function () {
+        console.log(quill.root.innerHTML); // Check the generated HTML
+    });
+</script>
+
+
 {% endblock %}

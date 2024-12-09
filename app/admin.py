@@ -227,7 +227,7 @@ class FertilizerAdmin(admin.ModelAdmin):
 
 @admin.register(Appointments)
 class AppointmentsAdmin(admin.ModelAdmin):
-    list_display = ("user__first_name", "user__last_name", "user__email", "event_type", "start", "end", "duration")
+    list_display = ("user__first_name", "user__last_name", "user__email", "event_type", "start", "end",)
 
 @admin.register(Announcement)
 class AnnouncementAdmin(admin.ModelAdmin):

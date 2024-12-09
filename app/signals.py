@@ -9,15 +9,14 @@ def appointment_emails(sender, instance, **kwargs):
     event_type = instance.event_type
     start = instance.start
     end = instance.end
-    duration = instance.duration
     notes = instance.notes
     status = instance.status
     user_id = instance.user_id
     #to be define
     contact_email = "biofarmula3@gmail.com"
     contact_phone = "(054) 881-1033"
-    farm_name = "BioFarmula"
-    website_url = "www.Biofarmula.com"
+    farm_name = "Badang ni Ignacio"
+    website_url = "www.BadangniIgnacio.com"
     user = User.objects.filter(id=user_id)
     try:
         for i in user:
@@ -29,13 +28,13 @@ def appointment_emails(sender, instance, **kwargs):
         pass
 
     if status == 'RESERVED':
-        send_reservation_confirmation(customer_name, customer_email, event_type, start, end, duration, notes, contact_email, contact_phone, farm_name, website_url)
+        send_reservation_confirmation(customer_name, customer_email, event_type, start, end, notes, contact_email, contact_phone, farm_name, website_url)
     elif status == 'RE-SCHEDULE':
-        send_reservation_reschedule(customer_name, customer_email, event_type, start, end, duration, notes, contact_email, contact_phone, farm_name, website_url)
+        send_reservation_reschedule(customer_name, customer_email, event_type, start, end, notes, contact_email, contact_phone, farm_name, website_url)
     elif status == 'CANCEL':
-        send_reservation_cancelled(customer_name, customer_email, event_type, start, end, duration, notes, contact_email, contact_phone, farm_name, website_url)
+        send_reservation_cancelled(customer_name, customer_email, event_type, start, end, notes, contact_email, contact_phone, farm_name, website_url)
     elif status == 'PENDING':
-        send_reservation_pending(customer_name, customer_email, event_type, start, end, duration, notes, contact_email, contact_phone, farm_name, website_url)
+        send_reservation_pending(customer_name, customer_email, event_type, start, end, notes, contact_email, contact_phone, farm_name, website_url)
 
 @receiver(post_save, sender=Announcement)
 def appointment_emails(sender, instance, **kwargs):
@@ -44,7 +43,7 @@ def appointment_emails(sender, instance, **kwargs):
     #to be define
     contact_email = "biofarmula3@gmail.com"
     contact_phone = "(054) 881-1033"
-    farm_name = "BioFarmula"
+    farm_name = "Badang ni Ignacio"
     website_url = "www.Biofarmula.com"
     user = User.objects.all()
     try:
@@ -56,3 +55,4 @@ def appointment_emails(sender, instance, **kwargs):
         customer_name = ""
         customer_email
         pass
+    

@@ -2,23 +2,249 @@
 {% load static %}
 
 {% block choose %}
-<div class="choose_section layout_padding">
-    <div class="container">
-        <h1 class="choose_taital" id="login">Login</h1>
-        <form action="{% url 'signin' %}" method="POST">
-            {%include 'app/messages.html'%}
-            {% csrf_token %}
-            <div class="form-group">
-                <label for="{{form.email.id_for_label}}" class="col-sm-12 col-form-label">{{form.email.label}} {%if form.email.field.required%}<i style="color:red">*</i>{%endif%}</label>
-                {{form.email}}
+
+<div id="login" class="choose_section layout_padding">           
+    <div class="container login-container">
+        <!-- Left Side - Welcome Message -->
+        <div class="welcome-container">
+            <div class="welcome-message">
+                <h2>Hey There!</h2>
+                <p>Welcome to Badang ni Ignacio.<br>You are just one step away to your feed.</p>
+                <a href="{% url 'register' %}" class="btn-signup">Register</a>
             </div>
-            <div class="form-group">
-                <label for="{{form.password.id_for_label}}" class="col-sm-4 col-form-label">{{form.password.label}} {%if form.password.field.required%}<i style="color:red">*</i>{%endif%}</label>
-                {{form.password}}
-                <a href="{% url 'forgot-password' %}#forgot" style="color:red; font-size: 8pt; float: right;">Forgot Password?</a>
-            </div>
-            <button class="btn btn-success btn-lg" type="submit">Login</button>
-        </form>
+        </div>
+        <!-- Right Side - Login Form -->
+        <div class="login-form-container">
+            <h1 class="login-header">Login</h1>
+            <form action="{% url 'signin' %}" method="POST">
+                {% include 'app/messages.html' %}
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="{{ form.email.id_for_label }}">Email</label>
+                    {{ form.email }}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.password.id_for_label }}">Password</label>
+                    {{ form.password }}
+                </div>
+
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="showPassword" onclick="togglePassword()">
+                    <label for="showPassword" style="font-size: 12px;">Show Password</label>
+                </div>
+
+                <button type="submit" class="btn-login">Login</button>
+
+                <div class="login-links">
+                    <a href="{% url 'forgot-password' %}#forgot">Forgot Password?</a>
+                </div>
+            </form>
+        </div>
     </div>
- </div>
+</div>
+
+<style>
+    .login-container {
+        display: flex;
+        flex-direction: column;
+        height: auto;
+        max-width: 1200px;
+        margin: 50px auto;
+        background-color: #f8f9fa;
+        border-radius: 15px;
+        box-shadow: 0 20px 30px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    @media (min-width: 768px) {
+        .login-container {
+            flex-direction: row;
+        }
+    }
+
+    .login-form-container {
+        flex: 1;
+        padding: 2rem;
+        background-color: #ffffff;
+    }
+
+    .login-header {
+        font-size: 3.56rem;
+        color: #333;
+        font-weight: bold;
+        margin-bottom: 1.5rem;
+        text-align: center;
+    }
+
+    .form-group label {
+        display: block;
+        font-size: 1.5rem; 
+        color: #555;
+        margin-bottom: 0.5rem;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 10px; 
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 1.32rem; 
+    }
+
+    .btn-login {
+        width: 100%;
+        padding: 12px;
+        font-size: 1.5rem;
+        background-color: #0a9734;
+        color: #ffffff;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .btn-login:hover {
+        background-color: #027424;
+    }
+
+    .form-check {
+        margin-bottom: 1rem;
+        align-items: center;
+    }
+
+    .form-check-input {
+        margin-right: 5px;
+        width: 18px; 
+        height: 16px; 
+    }
+
+    .login-links {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 1rem 0;
+    }
+
+    .login-links label {
+        font-size: 1rem; 
+    }
+
+    .login-links a {
+        color: #0a9734;
+        text-decoration: none;
+        font-size: 1.3rem; 
+    }
+
+    .welcome-container {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-image: url("{% static 'app/images/gate.jpg' %}");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        padding: 2rem;
+        color: #ffffff;
+    }
+
+    .welcome-message {
+        text-align: center;
+    }
+
+    .welcome-message h2 {
+        font-size: 2.5rem; 
+        font-weight: bold;
+        margin-bottom: 1rem;
+    }
+
+    .welcome-message p {
+        font-size: 1.7rem;
+        margin-bottom: 2rem;
+    }
+
+    .btn-signup {
+        padding: 7px 30px;
+        font-size: 1.5rem; 
+        color: #ffffff;
+        background-color: transparent;
+        border: 2px solid #ffffff;
+        border-radius: 25px;
+        text-decoration: none;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    .btn-signup:hover {
+        background-color: #0a9734;
+        color: #ffffff;
+    }
+
+    @media (max-width: 767px) {
+        .login-header {
+            font-size: 1.8rem;
+        }
+
+        .form-group label,
+        .login-links label,
+        .login-links a {
+            font-size: 0.9rem; 
+        }
+
+        .welcome-message h2 {
+            font-size: 2rem; 
+        }
+
+        .welcome-message p {
+            font-size: 1rem;
+        }
+
+        .btn-login {
+            font-size: 1rem;
+        }
+
+        .btn-signup {
+            font-size: 1rem; 
+        }
+    }
+
+    @media (max-width: 480px) {
+        .login-header {
+            font-size: 1.5rem;
+        }
+
+        .welcome-message h2 {
+            font-size: 1.8rem; 
+        }
+
+        .welcome-message p {
+            font-size: 0.9rem;
+        }
+
+        .btn-login, .btn-signup {
+            font-size: 0.9rem; 
+        }
+
+        .form-group label,
+        .login-links label,
+        .login-links a {
+            font-size: 0.8rem; 
+        }
+    }
+
+</style>
+
+
+<script>
+    function togglePassword() {
+        const passwordInput = document.querySelector('#{{ form.password.id_for_label }}');
+        passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password';
+    }
+</script>
+
+
 {% endblock %}

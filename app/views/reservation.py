@@ -16,7 +16,7 @@ def index(request):
         return HttpResponseRedirect("/admin-reservation")
     else:
         reservations = Appointments.objects.filter(user_id=request.session['userid'])
-        paginator = Paginator(reservations, 10)
+        paginator = Paginator(reservations, 5)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
         return render(request, 'app/reservation.html', {'page': page, 'list': page_obj})
@@ -100,3 +100,5 @@ def add(request):
     for i in getDisableDates:
         disabledDates.append(datetime.strftime(i.start, "%Y-%m-%d"))
     return render(request, 'app/new_reservation.html', {'page': page, 'form': form, 'disabledDates': disabledDates})
+
+

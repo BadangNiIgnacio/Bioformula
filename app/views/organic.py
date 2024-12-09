@@ -14,6 +14,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Max
 from django.views.decorators.http import require_GET
 from django.db.models import Count
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from math import ceil
 
 def index(request):
     page = 'Organic'
@@ -21,43 +23,77 @@ def index(request):
 
 def fertilizer(request):
     page = 'Organic'
-    if request.method == "POST":
-        try:
-            search = request.POST.get("search")
-            result = FertilizersIngredients.objects.filter(
-                Q(fertilizer__name__icontains=search) | Q(fertilizer__description__icontains=search) | Q(description__icontains=search)
-            ).values('fertilizer_id', 'fertilizer__name', 'fertilizer__description').annotate(count=Count('fertilizer_id')).distinct()
-            #feedback
-            #fertilizer = FertilizerFeedback.objects.filter(fertilizer__status=True).annotate(max_rating=Max('rating')).order_by('-max_rating')
-            """ fertilizer = FertilizerFeedback.objects.filter(
-                Q(fertilizer__name__icontains=search) | Q(fertilizer__description__icontains=search)
-            ).values('fertilizer_id').annotate(avg_rating=Avg('rating')).order_by('-rating') """
-            ratings = []
-            if result:
-                for i in result:
-                    fertilizer = FertilizerFeedback.objects.filter(fertilizer_id=i['fertilizer_id'])
-                    rating = 0
-                    count = 0
-                    for j in fertilizer:
-                        rating += j.rating
-                        count += 1
-                        rating = rating / count
-                    ave = {
-                        'fertilizer_id'     : i['fertilizer_id'],
-                        'fertilizer_name'   : i['fertilizer__name'],
-                        'rating'            : rating
-                    }
-                    ratings.append(ave)
-            paginator = Paginator(result, 10)
-            page_number = request.GET.get('page')
-            page_obj = paginator.get_page(page_number)
-            form = FertilizerSearchForm()
-            return render(request, 'app/fertilizer.html', {'page': page, 'form': form, 'list_': page_obj, 'fertilizer': ratings})
-        except Exception as e:
-            messages.error(request, str(e))
     form = FertilizerSearchForm()
-    return render(request, 'app/fertilizer.html', {'page': page, 'form': form})
+    search_query = request.POST.get("search", "")
 
+    try:
+        result = FertilizersIngredients.objects.filter(
+            Q(fertilizer__name__icontains=search_query) |
+            Q(fertilizer__description__icontains=search_query) |
+            Q(description__icontains=search_query)
+        ).values('fertilizer_id', 'fertilizer__name', 'fertilizer__description').annotate(count=Count('fertilizer_id')).distinct()
+
+        if not result.exists():
+            messages.error(request, "No fertilizers found matching your search.")
+            return render(request, 'app/fertilizer.html', {
+                'page': page,
+                'form': form,
+                'list_': None,
+                'fertilizer': None,
+            })
+
+        ratings = []
+        for i in result:
+            fertilizer_feedback = FertilizerFeedback.objects.filter(fertilizer_id=i['fertilizer_id'])
+            fertilizer_obj = FertilizersIngredients.objects.filter(fertilizer_id=i['fertilizer_id']).first()
+            rating = 0
+            total_reviews = fertilizer_feedback.count()
+            if total_reviews > 0:
+                rating = sum(f.rating for f in fertilizer_feedback) / total_reviews
+            ratings.append({
+                'fertilizer_id': i['fertilizer_id'],
+                'fertilizer_name': i['fertilizer__name'],
+                'rating': round(rating, 1),
+                'total_reviews': total_reviews,
+                'image': fertilizer_obj.fertilizer.image.url if fertilizer_obj and fertilizer_obj.fertilizer.image else None
+            })
+
+        ratings.sort(key=lambda x: x['rating'], reverse=True)
+
+        recommendations_per_page = 4
+        ratings_per_page = 6
+        paginator_result = Paginator(result, recommendations_per_page)
+        paginator_ratings = Paginator(ratings, ratings_per_page)
+        page_number = int(request.GET.get('page', 1))
+
+        try:
+            page_obj_result = paginator_result.page(page_number)
+        except (PageNotAnInteger, EmptyPage):
+            page_obj_result = paginator_result.page(1)
+
+        try:
+            page_obj_ratings = paginator_ratings.page(page_number)
+        except (PageNotAnInteger, EmptyPage):
+            page_obj_ratings = paginator_ratings.page(1)
+
+        total_pages = max(
+            ceil(len(result) / recommendations_per_page),
+            ceil(len(ratings) / ratings_per_page)
+        )
+
+        return render(request, 'app/fertilizer.html', {
+            'page': page,
+            'form': form,
+            'list_': page_obj_result,
+            'fertilizer': page_obj_ratings,
+            'total_pages': total_pages,
+            'current_page': page_number,
+        })
+
+    except Exception as e:
+        messages.error(request, f"An error occurred: {str(e)}")
+        return render(request, 'app/fertilizer.html', {'page': page, 'form': form})
+ 
 def fertilizer_details(request, id):
     page = 'Organic'
     instance = get_object_or_404(Fertilizers, pk=id)
@@ -69,15 +105,26 @@ def fertilizer_details(request, id):
     benefits = FertilizerBenefits.objects.filter(fertilizer_id=id)
     notes = FertilizerNotes.objects.filter(fertilizer_id=id)
 
-    for i in feedback:
+    # Paginate feedbacks
+    paginator = Paginator(feedback, 4)  # Show 5 feedbacks per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    # Add user profile image to each feedback
+    for i in page_obj:
         profile = Profile.objects.filter(user_id=i.user_id)
         for x in profile:
             if x.image:
                 i.image = x.image
             else:
                 i.image = settings.MEDIA_URL + "dp/default.jpeg"
+
     form = FertilizerConversionForm(instance=instance)
-    return render(request, 'app/fertilizer-details.html', {'page': page, 'details': details, 'ing': ing, 'proc': proc, 'feedback': feedback, 'id': id, 'form': form, 'source': source, 'benefits': benefits, 'notes': notes})
+    return render(request, 'app/fertilizer-details.html', {
+        'page': page, 'details': details, 'ing': ing, 'proc': proc,
+        'feedback': page_obj, 'id': id, 'form': form,
+        'source': source, 'benefits': benefits, 'notes': notes
+    })
 
 def post_fertilizer_feedback(request, id):
     try:
@@ -97,41 +144,90 @@ def post_fertilizer_feedback(request, id):
 
 def pesticide(request):
     page = 'Organic'
-    if request.method == "POST":
-        try:
-            form = PesticideSearchForm(request.POST)
-            search = request.POST.get("search")
-            result = PesticideIngredients.objects.filter(
-                Q(pesticide__name__icontains=search) | Q(pesticide__description__icontains=search) | Q(description__icontains=search)
-            ).values('pesticide_id', 'pesticide__name', 'pesticide__description').annotate(count=Count('pesticide_id')).distinct()
-
-            #feedback
-            # pesticide = PesticideFeedback.objects.filter(pesticide__status=True).annotate(max_rating=Max('rating')).order_by('-max_rating')
-            ratings = []
-            if result:
-                for i in result:
-                    pesticide = PesticideFeedback.objects.filter(pesticide_id=i['pesticide_id'])
-                    rating = 0
-                    count = 0
-                    for j in pesticide:
-                        rating += j.rating
-                        count += 1
-                        rating = rating / count
-                    ave = {
-                        'pesticide_id'     : i['pesticide_id'],
-                        'pesticide_name'   : i['pesticide__name'],
-                        'rating'           : rating
-                    }
-                    ratings.append(ave)
-            paginator = Paginator(result, 10)
-            page_number = request.GET.get('page')
-            page_obj = paginator.get_page(page_number)
-            form = PesticideSearchForm()
-            return render(request, 'app/pesticide.html', {'page': page, 'form': form, 'list_': page_obj, 'pesticide': ratings})
-        except Exception as e:
-            messages.error(request, str(e))
     form = PesticideSearchForm()
-    return render(request, 'app/pesticide.html', {'page': page, 'form': form})
+    search_query = request.POST.get("search", "")
+    
+    try:
+        # Fetch results based on the search query
+        result = PesticideIngredients.objects.filter(
+            Q(pesticide__name__icontains=search_query) |
+            Q(pesticide__description__icontains=search_query) |
+            Q(description__icontains=search_query)
+        ).values('pesticide_id', 'pesticide__name', 'pesticide__description').annotate(count=Count('pesticide_id')).distinct()
+
+        # Check if no results were found
+        if not result.exists():
+            messages.error(request, "No pesticides found matching your search.")
+            return render(request, 'app/pesticide.html', {
+                'page': page,
+                'form': form,
+                'list_': None,
+                'pesticide': None,
+            })
+
+        # Generate pesticide ratings and total reviews
+        ratings = []
+        for i in result:
+            pesticide_feedback = PesticideFeedback.objects.filter(pesticide_id=i['pesticide_id'])
+            pesticide_obj = PesticideIngredients.objects.filter(pesticide_id=i['pesticide_id']).first()
+            
+            # Calculate the average rating and total reviews
+            rating = 0
+            total_reviews = pesticide_feedback.count()
+            if total_reviews > 0:
+                rating = sum(f.rating for f in pesticide_feedback) / total_reviews
+            
+            ratings.append({
+                'pesticide_id': i['pesticide_id'],
+                'pesticide_name': i['pesticide__name'],
+                'rating': round(rating, 1),
+                'total_reviews': total_reviews,
+                'image': pesticide_obj.pesticide.image.url if pesticide_obj and pesticide_obj.pesticide.image else None
+            })
+
+        # Sort ratings by highest to lowest
+        ratings.sort(key=lambda x: x['rating'], reverse=True)
+
+        # Pagination settings
+        recommendations_per_page = 4
+        ratings_per_page = 6
+
+        # Calculate pages for recommendations and ratings
+        paginator_result = Paginator(result, recommendations_per_page)
+        paginator_ratings = Paginator(ratings, ratings_per_page)
+
+        # Get page numbers
+        page_number = int(request.GET.get('page', 1))
+
+        # Determine which page of each to display
+        try:
+            page_obj_result = paginator_result.page(page_number)
+        except (PageNotAnInteger, EmptyPage):
+            page_obj_result = paginator_result.page(1)
+
+        try:
+            page_obj_ratings = paginator_ratings.page(page_number)
+        except (PageNotAnInteger, EmptyPage):
+            page_obj_ratings = paginator_ratings.page(1)
+
+        # Calculate total number of pages to synchronize pagination
+        total_pages = max(
+            ceil(len(result) / recommendations_per_page),
+            ceil(len(ratings) / ratings_per_page)
+        )
+
+        return render(request, 'app/pesticide.html', {
+            'page': page,
+            'form': form,
+            'list_': page_obj_result,
+            'pesticide': page_obj_ratings,
+            'total_pages': total_pages,
+            'current_page': page_number,
+        })
+
+    except Exception as e:
+        messages.error(request, f"An error occurred: {str(e)}")
+        return render(request, 'app/pesticide.html', {'page': page, 'form': form})
 
 def pesticide_details(request, id):
     page = 'Organic'
@@ -141,20 +237,29 @@ def pesticide_details(request, id):
     proc = PesticideProcedure.objects.filter(pesticide_id=id)
     feedback = PesticideFeedback.objects.filter(pesticide_id=id)
     source = PesticideSource.objects.filter(pesticide_id=id)
-    pest = PesticideTargetPest.objects.filter(pesticide_id=id)
-    usage = PesticideUsage.objects.filter(pesticide_id=id)
-    benefit = PesticideBenefit.objects.filter(pesticide_id=id)
+    benefits = PesticideBenefit.objects.filter(pesticide_id=id)
     notes = PesticideNotes.objects.filter(pesticide_id=id)
-    for i in feedback:
+
+    # Paginate feedbacks
+    paginator = Paginator(feedback, 4)  # Show 5 feedbacks per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    # Add user profile image to each feedback
+    for i in page_obj:
         profile = Profile.objects.filter(user_id=i.user_id)
         for x in profile:
             if x.image:
                 i.image = x.image
             else:
                 i.image = settings.MEDIA_URL + "dp/default.jpeg"
-    form = PesticideConversionForm(instance=instance)
-    return render(request, 'app/pesticide-details.html', {'page': page, 'details': details, 'ing': ing, 'proc': proc, 'feedback': feedback, 'id': id, 'form': form, 'source': source, 'pest': pest, 'usage': usage, 'benefits': benefit, 'notes': notes})
 
+    form = PesticideConversionForm(instance=instance)
+    return render(request, 'app/pesticide-details.html', {
+        'page': page, 'details': details, 'ing': ing, 'proc': proc,
+        'feedback': page_obj, 'id': id, 'form': form,
+        'source': source, 'benefits': benefits, 'notes': notes
+    })
 
 def post_pesticide_feedback(request, id):
     try:
@@ -254,7 +359,7 @@ def search_suggestions(request):
                 ).distinct()
         suggestions_list = list(suggestions.values('description')[:10])  # Convert QuerySet to list
         fertilizers = Fertilizers.objects.filter(Q(name__icontains=query)).distinct()
-        fertilizers_list = list(fertilizers.values('name')[:10])
+        fertilizers_list = list(fertilizers.values('name')[:5])
     else:
         suggestions_list = []
         fertilizers_list = []
@@ -274,7 +379,7 @@ def search_suggestions_pest(request):
                 ).distinct()
         suggestions_list = list(suggestions.values('description')[:10])  # Convert QuerySet to list
         pesticides = Pesticides.objects.filter(Q(name__icontains=query)).distinct()
-        pesticide_list = list(pesticides.values('name')[:10])
+        pesticide_list = list(pesticides.values('name')[:5])
     else:
         suggestions_list = []
         pesticide_list = []

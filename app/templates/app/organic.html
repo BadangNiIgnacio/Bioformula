@@ -1,38 +1,109 @@
 {% extends 'app/base.html' %}
 {% load static %}
 {% block products %}
-<div class="services_section layout_padding">
+<div class="services_section layout_padding" id="organic1">
     <div class="container">
-       <h1 class="services_taital" id="organic">Organic Products</h1>
-       <div class="services_section_2 layout_padding">
-          <div class="row">
-             <div class="col-md-6">
-                <a href="{% url 'fertilizer' %}#fertilizer">
-                    <div class="image_main">
-                       <img src="{% static 'app/images/org-fert.png' %}" class="image_2">
-                       <!-- <h2 class="vegetable_text">Organic Fertilizers</h2> -->
-                    </div>
-                    <h2 class="index_organic">Organic Fertilizers</h2>
-                </a>
-             </div>
-             <div class="col-md-6">
-                <a href="{% url 'pesticide' %}#pesticide">
-                    <div class="image_main">
-                       <img src="{% static 'app/images/org-pest.png' %}" class="image_2">
-                       <!-- <h2 class="vegetable_text">Organic Pesticides</h2> -->
-                    </div>
-                    <h2 class="index_organic">Organic Pesticides</h2>
-                 </a>
-             </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12">
-               <h4 style="text-align: left; margin-top: 5%;">Instructions:</h4>
-               <p style="text-align: justify; font-style: italic;">Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.</p>
+        <h1 class="services_taital" id="organic" style="padding-top: 40px;">Organic Products</h1>
+        <div class="services_section_2 layout_padding" style="padding-top: 5px;">
+            <div class="row">
+                <div class="col-md-6">
+                    <a href="{% url 'fertilizer' %}#fertilizer">
+                        <div class="image_main" style="padding-bottom: 25px;">
+                            <img src="{% static 'app/images/org-fert.png' %}" class="image_2" 
+                                 style="width: 100%; border-radius: 15px; transition: transform 0.3s ease, box-shadow 0.3s ease;" 
+                                 onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 8px 16px rgba(0, 0, 0, 0.2)';" 
+                                 onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none';">
+                        </div>
+                        <h2 class="index_organic">Organic Fertilizers</h2>
+                    </a>
+                </div>
+                <div class="col-md-6">
+                    <a href="{% url 'pesticide' %}#pesticide">
+                        <div class="image_main" style="padding-bottom: 25px;">
+                            <img src="{% static 'app/images/orgpest.png' %}" class="image_2" 
+                                 style="width: 100%; border-radius: 15px; transition: transform 0.3s ease, box-shadow 0.3s ease;" 
+                                 onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 8px 16px rgba(0, 0, 0, 0.2)';" 
+                                 onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none';">
+                        </div>
+                        <h2 class="index_organic">Organic Pesticides</h2>
+                    </a>
+                </div>
             </div>
-          </div>
-       </div>
+            <div class="row">
+                <div class="col-md-12" style="text-align: left; margin-top: 20px; background-color: #f5fff5; padding: 15px; border: 1px solid #009900; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">      
+                    <label for="language-select" style="font-weight: 600; font-size: 18px; color: #007700;">
+                        Select Language for Instructions:
+                    </label>
+
+                    <select id="language-select" style="background-color: #7cc568; color: white; padding: 10px 15px; border: none; border-radius: 5px; font-size: 16px; cursor: pointer;" onchange="setLanguage()">
+                        <option value="en">English</option>
+                        <option value="tl">Filipino</option>
+                        <option value="bcl">Bikol</option>
+                    </select>
+                    
+                    <h4 id="instructionHeader" style="margin-top: 20px; color: #009900; font-weight: 600;">
+                        Instruction:
+                    </h4>
+                    
+                    <p id="instructionText" style="text-align: justify; font-size: 16px; line-height: 1.6; font-style: italic; color: #333;">
+                        Select either an organic fertilizer or pesticide to begin your search. The system will provide specific information and recommendations based on your selection, helping you quickly find the right formulation.
+                        <br><br>
+                        <strong>Note:</strong> You can only use English words to search for an ingredient. 
+                    </p>                    
+                </div>
+            </div>            
+        </div>    
     </div>
 </div>
-<br>
+
+<style>
+    .nice-select {
+            height: 15%;
+            width: 30%;
+    }
+
+    @media (max-width: 476px) {
+        .nice-select {
+            width: 50%;
+        }
+    }
+</style>
+
+<script>
+   
+    function setLanguage() {
+        const language = document.getElementById("language-select").value; 
+        localStorage.setItem("selectedLanguage", language); 
+        updateInstructionText(language); 
+    }
+
+
+    function updateInstructionText(language) {
+        const instructionHeader = document.getElementById("instructionHeader");
+        const instructionText = document.getElementById("instructionText");
+
+        if (language === "en") {
+            instructionHeader.innerText = "Instruction:";
+            instructionText.innerHTML = `Select either an organic fertilizer or pesticide to begin your search. The system will provide specific information and recommendations based on your selection, helping you quickly find the right formulation. 
+                <br><br> <strong>Note:</strong> You can only use English words to search for an ingredient.`;
+        
+        } else if (language === "tl") {
+            instructionHeader.innerText = "Panuto:";
+            instructionText.innerHTML = `Para masimulan ang paghahanap, kinakailangan na pumili ng alinman sa mga organic fertilizers o organic pesticides. Batay sa iyong napili, magbibigay ang system ng sapat na impormasyon at rekomendasyon na makakatulong sa iyo upang makahanap ng tama at sapat na pagbuo. 
+                <br><br> <strong>Tandaan:</strong> Salitang Ingles lamang ang maaaring gamitin sa paghahanap ng isang sangkap.`;
+        
+        } else if (language === "bcl") {
+            instructionHeader.innerText = "Susunudon:";
+            instructionText.innerHTML = `Pumili ka sana nin sarong organikong abuno o pestisidyo para mapunan an saimong paghanap. 
+                An system na ini, matao nin impormasyon asin rekomendasyon base sa saimong pinili, asin matabang saimo na mahiling an tama asin marikas sa paggigibo. 
+                <br><br> <strong>Pagirumdom:</strong> Ingles sana an tataramon na gagamiton sa paghanap nin sarong sangkap.`;
+        }
+    }
+
+    window.onload = function() {
+        const savedLanguage = localStorage.getItem("selectedLanguage") || 'en'; 
+        document.getElementById("language-select").value = savedLanguage; 
+        updateInstructionText(savedLanguage); 
+    }
+</script>
 {% endblock %}

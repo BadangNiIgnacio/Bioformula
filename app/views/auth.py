@@ -53,7 +53,7 @@ def forgot(request):
         #to be define
         contact_email = "biofarmula3@gmail.com"
         contact_phone = "(054) 881-1033"
-        farm_name = "BioFarmula"
+        farm_name = "Badang ni Ignacio"
         website_url = "www.Biofarmula.com"
         firstname = ""
         id = ""

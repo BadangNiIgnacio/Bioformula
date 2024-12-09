@@ -1,19 +1,184 @@
 {% extends 'app/base.html' %}
 {% load static %}
 
-{% block choose %}
-<div class="choose_section layout_padding">
-    <div class="container">
-        <h1 class="choose_taital" id="forgot">Forgot Password</h1>
-        <form action="{% url 'forgot-password' %}#forgot" method="POST">
-            {%include 'app/messages.html'%}
-            {% csrf_token %}
-            <div class="form-group">
-                <label for="{{form.email.id_for_label}}" class="col-sm-12 col-form-label">{{form.email.label}} {%if form.email.field.required%}<i style="color:red">*</i>{%endif%}</label>
-                {{form.email}}
-            </div>
-            <button class="btn btn-danger" type="submit">Forgot Password</button>
-        </form>
-    </div>
+ {% block choose %}
+ <div class="choose_section layout_padding">
+     <div class="container">
+         <h1 class="choose_taital" id="forgot">Forgot Password?</h1>
+         <p>Remember your password? <a href="{% url 'signin' %}#login">Login here</a></p>
+         <form action="{% url 'forgot-password' %}#forgot" method="POST">
+             {% include 'app/messages.html' %}
+             {% csrf_token %}
+             <div class="form-group">
+                <label for="{{ form.email.id_for_label }}" class="col-sm-12 col-form-label">
+                    {{ form.email.label }}
+                    {% if form.email.field.required %}<i style="color:red">*</i>{% endif %}
+                </label>
+                {{ form.email }}
+                
+             </div>
+             <button class="btn" type="submit">Reset Password</button>
+         </form>
+         <div class="footer-links">
+             <a href="{% url 'register' %}">Register</a> |
+             <a href="mailto:support@example.com">Contact us!</a>
+         </div>
+     </div>
  </div>
+ 
+ 
+ <style>
+    /* Center the form container */
+    .choose_section {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        padding: 20px;
+        background-color: #f4f6f8; /* Light gray background */
+    }
+    
+    .choose_section .container {
+        max-width: 500px;
+        width: 100%;
+        padding: 20px;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 40px 80px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        box-sizing: border-box;
+    }
+    
+    /* Title */
+    .choose_section .choose_taital {
+        font-size: 24px;
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: #333;
+    }
+    
+    /* Forgot password text and link */
+    .choose_section p {
+        font-size: 14px;
+        color: #666;
+    }
+    
+    .choose_section p a {
+        color: #4cae4c;
+        text-decoration: none;
+    }
+    
+    .choose_section p a:hover {
+        text-decoration: underline;
+    }
+    
+    /* Email label */
+    .choose_section .form-group label {
+        font-size: 14px;
+        color: #333;
+        text-align: left;
+        width: 100%;
+    }
+    
+    /* Email input field */
+    .choose_section .form-group input[type="email"] {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        margin-top: 5px;
+        margin-bottom: 20px;
+        box-sizing: border-box;
+    }
+    
+    /* Button */
+    .choose_section .btn {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        background-color: #4cae4c;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    
+    .choose_section .btn:hover {
+        border: 1px solid #0a9734;
+        background-color: #fff;
+        color: #4cae4c;
+    }
+    
+    /* Footer links */
+    .choose_section .footer-links {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        font-size: 14px;
+        color: #666;
+        margin-top: 20px;
+    }
+    
+    .choose_section .footer-links a {
+        color: #666;
+        text-decoration: none;
+    }
+    
+    .choose_section .footer-links a:hover {
+        color:  #4cae4c;
+        text-decoration: underline;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .choose_section .container {
+            max-width: 100%;
+            padding: 15px;
+        }
+    
+        .choose_section .choose_taital {
+            font-size: 20px;
+        }
+    
+        .choose_section p {
+            font-size: 13px;
+        }
+    
+        .choose_section .form-group label,
+        .choose_section .btn {
+            font-size: 15px;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .choose_section {
+            padding: 10px;
+        }
+    
+        .choose_section .container {
+            padding: 15px;
+        }
+    
+        .choose_section .choose_taital {
+            font-size: 18px;
+        }
+    
+        .choose_section p {
+            font-size: 12px;
+        }
+    
+        .choose_section .btn {
+            font-size: 14px;
+            padding: 8px;
+        }
+    }
+    </style>
+    
+
+<script>
+
+</script>
 {% endblock %}
+

@@ -1,104 +1,161 @@
 {% extends 'app/base.html' %}
 {% load static %}
 {% block products %}
+<!-- banner section end -->
+<div class="header_section layout_padding">
+    <div class="carousel-inner">
+        <div class="container">
+            <div class="row" style="padding-top: 90px; padding-bottom: 90px;">
+                <div class="col-md-6">
+                    <h1 class="banner_taital">
+                        Growing a Greener,<br>
+                        <span style="color: #fff;">Healthier Future</span>
+                    </h1>
+                    <p class="banner_text">
+                        We are committed to fostering sustainable and organic farming practices,
+                        empowering farmers to achieve better yields while protecting the environment.
+                    </p>
+                    <div class="read_bt">
+                        <a href="{% url 'about' %}#about">Learn More About Our Mission</a>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div>
+                        <img src="{% static 'app/images/img-1.png' %}" class="image_1">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="services_section layout_padding">
     <div class="container">
        <h1 class="services_taital">Organic Products</h1>
-       <div class="services_section_2 layout_padding">
-          <div class="row">
-             <div class="col-md-6">
-               <a href="{% url 'fertilizer' %}#fertilizer">
-                  <div class="image_main">
-                     <img src="{% static 'app/images/org-fert.png' %}" class="image_2">
-                     <!-- <h2 class="vegetable_text">Organic Fertilizers</h2> -->
-                  </div>
-                  <h2 class="index_organic">Organic Fertilizers</h2>
-               </a>
-             </div>
-             <div class="col-md-6">
-               <a href="{% url 'pesticide' %}#pesticide">
-                  <div class="image_main">
-                     <img src="{% static 'app/images/org-pest.png' %}" class="image_2">
-                     <!-- <h2 class="vegetable_text">Organic Pesticides</h2> -->
-                  </div>
-                  <h2 class="index_organic">Organic Pesticides</h2>
-               </a>
-             </div>
-          </div>
-       </div>
-    </div>
- </div>
-{% endblock %}
-
-{% block about %}
-<div class="about_section layout_padding" style="background-color: #defde0;" id="about">
-    <div class="container-fluid">
-       <div class="row">
-          <div class="col-md-6">
-             <div class="about_main">
-                <h1 class="about_taital">About Badang ni Ignacio</h1>
-                <p class="about_text">Badang ni Ignacio is run by Christian Life Community (CLC) and is accredited by Agricultural Training Institute (ATI) as a learning site for agriculture. It is an 11-hectare farm engaging both in plants and animals and is complete with facilities to provide students all the trainings they need in agriculture.
-                  To learn and adopt topics on agriculture and crop science, organic and sustainable farming, swine farming, poultry farming, making of organic fertilizers, crop protection and management. </p>
-                <!-- <div class="readmore_bt"><a href="#">Read More</a></div> -->
-             </div>
-          </div>
-          <div class="col-md-6 padding_0">
-             <div class="image_7"><img src="{% static 'app/images/a7.jpg' %}"></div>
-          </div>
+       <div class="services_section_2 layout_padding" style=" padding-top: 5px;">
+         <div class="row">
+            <div class="col-md-6">
+                <a href="{% url 'fertilizer' %}#fertilizer">
+                    <div class="image_main" style="padding-bottom: 25px;">
+                        <img src="{% static 'app/images/org-fert.png' %}" class="image_2" 
+                             style="width: 100%; border-radius: 15px; transition: transform 0.3s ease, box-shadow 0.3s ease;" 
+                             onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 8px 16px rgba(0, 0, 0, 0.2)';" 
+                             onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none';">
+                    </div>
+                    <h2 class="index_organic">Organic Fertilizers</h2>
+                </a>
+            </div>
+            <div class="col-md-6">
+                <a href="{% url 'pesticide' %}#pesticide">
+                    <div class="image_main" style="padding-bottom: 25px;">
+                        <img src="{% static 'app/images/orgpest.png' %}" class="image_2" 
+                             style="width: 100%; border-radius: 15px; transition: transform 0.3s ease, box-shadow 0.3s ease;" 
+                             onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 8px 16px rgba(0, 0, 0, 0.2)';" 
+                             onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none';">
+                    </div>
+                    <h2 class="index_organic">Organic Pesticides</h2>
+                </a>
+            </div>
+        </div>
        </div>
     </div>
  </div>
 {% endblock %}
 
 {% block about2 %}
-<div class="client_section layout_padding" id="about">
+<div class="client_section layout_padding">
     <div class="container">
        <h1 class="choose_taital">About Badang ni Ignacio</h1>
        <div id="my_slider" class="carousel slide" data-ride="carousel" data-interval="2000">
           <div class="carousel-inner">
+
              <div class="carousel-item active">
-                <div class="client_section_2 layout_padding">
+                <div class="client_section_2 layout_padding" style=" padding-top: 5px;">
                    <div class="row">
                       <div class="col-md-6">
                          <h2 class="siaalya_text"></h2>
                          <p class="lorem_text">Badang ni Ignacio is run by Christian Life Community (CLC) and is accredited by Agricultural Training Institute (ATI) as a learning site for agriculture. It is an 11-hectare farm engaging both in plants and animals and is complete with facilities to provide students all the trainings they need in agriculture. To learn and adopt topics on agriculture and crop science, organic and sustainable farming, swine farming, poultry farming, making of organic fertilizers, crop protection and management.</p>
                       </div>
                       <div class="col-md-6">
-                      <h2 class="siaalya_text"></h2>
-                      <p class="lorem_text"><img src="{% static 'app/images/a7.jpg' %}"></p>
+                          <h2 class="siaalya_text"></h2>
+                          <p class="lorem_text">
+                              <img src="{% static 'app/images/farm-10.png' %}" alt="Agriculture Image" style="width: 100%;">
+                          </p>
                       </div>
                    </div>
                 </div>
              </div>
+             
              <div class="carousel-item">
-               <div class="client_section_2 layout_padding">
-                  <div class="row">
-                     <div class="col-md-6">
-                        <h2 class="siaalya_text"></h2>
-                        <p class="lorem_text">Badang ni Ignacio is run by Christian Life Community (CLC) and is accredited by Agricultural Training Institute (ATI) as a learning site for agriculture. It is an 11-hectare farm engaging both in plants and animals and is complete with facilities to provide students all the trainings they need in agriculture. To learn and adopt topics on agriculture and crop science, organic and sustainable farming, swine farming, poultry farming, making of organic fertilizers, crop protection and management.</p>
-                     </div>
-                     <div class="col-md-6">
-                     <h2 class="siaalya_text"></h2>
-                     <p class="lorem_text"><img src="{% static 'app/images/a7.jpg' %}"></p>
-                     </div>
-                  </div>
-               </div>
+                <div class="client_section_2 layout_padding" style="padding-top: 5px;">
+                   <div class="row">
+                       <div class="col-md-6">
+                           <h2 class="siaalya_text"></h2>
+                           <p class="lorem_text">Badang ni Ignacio is known for its Prayer Labyrinth field, a serene place where individuals can reflect and pray as they walk in a circular path. It provides a peaceful environment for meditation and deep contemplation. Visitors often find solace and spiritual renewal in this sacred space.</p>
+                       </div>
+                       <div class="col-md-6">
+                           <h2 class="siaalya_text"></h2>
+                           <p class="lorem_text">
+                               <img src="{% static 'app/images/farm-2.png' %}" alt="Prayer Labyrinth Image" style="width: 100%;">
+                           </p>
+                       </div>
+                   </div>
+                </div>
              </div>
+
              <div class="carousel-item">
-               <div class="client_section_2 layout_padding">
-                  <div class="row">
-                     <div class="col-md-6">
-                        <h2 class="siaalya_text"></h2>
-                        <p class="lorem_text">Badang ni Ignacio is run by Christian Life Community (CLC) and is accredited by Agricultural Training Institute (ATI) as a learning site for agriculture. It is an 11-hectare farm engaging both in plants and animals and is complete with facilities to provide students all the trainings they need in agriculture. To learn and adopt topics on agriculture and crop science, organic and sustainable farming, swine farming, poultry farming, making of organic fertilizers, crop protection and management.</p>
-                     </div>
-                     <div class="col-md-6">
-                     <h2 class="siaalya_text"></h2>
-                     <p class="lorem_text"><img src="{% static 'app/images/a7.jpg' %}"></p>
-                     </div>
-                  </div>
+                <div class="client_section_2 layout_padding" style="padding-top: 5px;">
+                   <div class="row">
+                       <div class="col-md-6">
+                           <h2 class="siaalya_text"></h2>
+                           <p class="lorem_text">Here at Badang ni Ignacio, the farm is renowned for its commitment to natural farming, employing well-known and traditional methods to cultivate plants naturally and organically. They use concocted organic fertilizers and pesticides to promote healthier plant growth. These practices not only enhance crop yield but also ensure environmentally sustainable farming.</p>
+                       </div>
+                       <div class="col-md-6">
+                           <h2 class="siaalya_text"></h2>
+                           <p class="lorem_text">
+                               <img src="{% static 'app/images/farm-3.png' %}" alt="Natural Farming Image" style="width: 100%;">
+                           </p>
+                       </div>
+                   </div>
                </div>
+              </div>
+
+             <div class="carousel-item">
+               <div class="client_section_2 layout_padding" style="padding-top: 5px;">
+                  <div class="row">
+                      <div class="col-md-6">
+                          <h2 class="siaalya_text"></h2>
+                          <p class="lorem_text">This is one of the highlights of Badang ni Ignacio, where anyone, including visitors, can swim or take a refreshing bath. The natural spring water, sourced from its pristine environment such as caves and surrounded by trees, accompanied by the soothing sounds of birds and the serene, peaceful atmosphere, creates a profoundly positive impact, helping everyone feel rejuvenated.</p>
+                      </div>
+                      <div class="col-md-6">
+                          <h2 class="siaalya_text"></h2>
+                          <p class="lorem_text">
+                              <img src="{% static 'app/images/farm-7.png' %}" alt="Spring Water Image" style="width: 100%;">
+                          </p>
+                      </div>
+                  </div>
+              </div>
              </div>
+             
+             <div class="carousel-item">
+                <div class="client_section_2 layout_padding" style=" padding-top: 5px;">
+                   <div class="row">
+                      <div class="col-md-6">
+                         <h2 class="siaalya_text"></h2>
+                         <p class="lorem_text">The Communities of Practice (CoP) is an activity held in Badang ni Ignacio, where students from different schools can learn and create organic concoctions used in making organic fertilizers and pesticides. It serves as a platform for collaborative learning and hands-on experience in organic farming practices. Participants are encouraged to share knowledge and techniques that contribute to sustainable agriculture. The initiative also aims to promote environmental awareness and the practical application of eco-friendly solutions in farming.</p>
+                      </div>
+                      <div class="col-md-6">
+                          <h2 class="siaalya_text"></h2>
+                          <p class="lorem_text">
+                              <img src="{% static 'app/images/farm-4.png' %}" alt="CoP Image" style="width: 100%;">
+                          </p>
+                      </div>
+                   </div>
+                </div>
+              </div>
+
           </div>
+
           <a class="carousel-control-prev" href="#my_slider" role="button" data-slide="next">
           <i class="fa fa-arrow-left"></i>
           </a>
@@ -106,51 +163,61 @@
           <i class="fa fa-arrow-right"></i>
           </a>
        </div>
+
+        <!-- Read More Button -->
+        <div style="text-align: left; margin-top: 20px;">
+            <a href="{% url 'about' %}" class="btn btn-primary" 
+               style="background-color: #4cae4c; border: 1px solid #3c8b3c; font-size: 16px; padding: 10px 20px;">
+                Read More
+            </a>
+        </div>
+        
     </div>
- </div>
+</div>
 {% endblock %}
 
 {% block choose %}{% endblock %}
 
 {% block client %}
-
-    <div class="contact_section layout_padding">
-       <div class="container">
-          <h1 class="contact_text">Register</h1>
-       </div>
-    </div>
-    <div class="contact_section_2 layout_padding">
-       <div class="container-fluid">
-          <div class="row">
-             <div class="col-md-6">
-                <div class="mail_main">
-                   <form id="registration-form" action="{% url 'register' %}" method="POST">
-                    {%include 'app/messages.html'%}
+<div class="contact_section layout_padding">
+    <div class="container" style="border: 1px solid #ddd; margin-bottom: 8rem; padding: 20px; border-radius: 15px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);">
+      <h2 class="contact_text" style="color: #2c5f2d; font-weight: bold; margin-bottom: 20px;">REGISTER</h2>
+        <div class="row align-items-center">
+            <!-- Form Section -->
+            <div class="col-md-6">
+                <form id="registration-form" action="{% url 'register' %}" method="POST">
+                    {% include 'app/messages.html' %}
                     {% csrf_token %}
-                      <div class="form-group">
-                        {{form.firstname}}
-                      </div>
-                      <div class="form-group">
-                        {{form.middlename}}
-                      </div>
-                      <div class="form-group">
-                        {{form.lastname}}
-                      </div>
-                      <div class="form-group">
-                        {{form.email}}
-                        {{form.email.errors}}
-                      </div>
-                   <div class="send_btn">
-                      <div class="main_bt"><button class="btn btn-success btn-lg" type="submit">Register</button></div>
-                   </div>
-                    </form>
+                    <div class="form-group">
+                        <label for="{{ form.firstname.id_for_label }}" class="col-form-label">First Name</label>
+                        {{ form.firstname }}
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ form.middlename.id_for_label }}" class="col-form-label">Middle Name</label>
+                        {{ form.middlename }}
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ form.lastname.id_for_label }}" class="col-form-label">Last Name</label>
+                        {{ form.lastname }}
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ form.email.id_for_label }}" class="col-form-label">Email</label>
+                        {{ form.email }}
+                        {{ form.email.errors }}
+                    </div>
+                    <div class="send_btn">
+                        <button class="btn btn-success btn-lg" type="submit" style="width: 100%; background-color: #4cae4c; border: none;">Register</button>
+                    </div>
+                </form>
+            </div>
+            <!-- Image Section -->
+            <div class="col-md-6">
+                <div style="padding: 20px;">
+                    <img src="{% static 'app/images/2.png' %}" class="img-fluid" style="border-radius: 10px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);" alt="Welcome Gate">
                 </div>
-             </div>
-             <div class="col-md-6">
-                <div style="padding-bottom: 5%;"><img src="{% static 'app/images/gate.png' %}" class="image_13"></div>
-             </div>
-          </div>
-       </div>
+            </div>
+        </div>
     </div>
- </div>
+</div>
 {% endblock %}
+

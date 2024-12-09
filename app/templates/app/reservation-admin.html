@@ -1,99 +1,142 @@
 {% extends 'app/base.html' %}
 {% load static %}
 {% block choose %}
-<div class="choose_section layout_padding">
-    <div class="container">
-       <h1 class="choose_taital" id="reservation">Reservations</h1>
+<div class="choose_section layout_padding" id="admin-reserve">
+   <div class="container">
+       <h1 class="choose_taital" id="reservation" style="padding-top: 40px;">Reservations</h1>
        <div class="container">
-         <table class="table table-hover" style="width: 100%;">
-            <thead>
-               <tr>
-                  <th>Event Type</th>
-                  <th>Start</th>
-                  <th>End</th>
-                  <th>No. of days</th>
-                  <th>Status</th>
-               </tr>
-            </thead>
-            <tbody>
-                {% for i in list %}
-                <tr onclick="window.location.href='/reservation-details/{{i.appointment_id}}#reservation'" style="cursor: pointer;">
-                    <td>{{i.event_type}}</td>
-                    <td>{{i.start}}</td>
-                    <td>{{i.end}}</td>
-                    <td>{{i.days}}</td>
-                    <td>{{i.status}}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-         </table>
-         <a href="{% url 'new-reservation' %}" type="button" class="btn btn-success">New Reservation</a>
-         <br>
-         <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-center">
-               {% if list.has_previous %}
-                  <li class="page-item">
-                        <a class="page-link" href="?page=1#reservation" aria-label="First">
+           <table class="table table-hover custom-table" style="width: 100%;">
+               <thead style="font-size: 15px;">
+                   <tr>
+                       <th>Event Type</th>
+                       <th>Start</th>
+                       <th>End</th>
+                       <th>Status</th>
+                   </tr>
+               </thead>
+               <tbody style="font-size: 13px;">
+                   {% for i in list %}
+                   <tr onclick="window.location.href='/reservation-details/{{i.appointment_id}}#reservation'" style="cursor: pointer;">
+                       <td>{{ i.event_type }}</td>
+                       <td>{{ i.start }}</td>
+                       <td>{{ i.end }}</td>
+                       <td>{{ i.status }}</td>
+                   </tr>
+                   {% endfor %}
+               </tbody>
+           </table>
+
+           <a href="{% url 'new-reservation' %}" type="button" class="btn btn-success">New Reservation</a>
+           <br>
+           <nav aria-label="Page navigation example">
+               <ul class="pagination justify-content-center">
+                   {% if list.has_previous %}
+                   <li class="page-item">
+                       <a class="page-link" href="?page=1#reservation" style="color: #5cb85c;" aria-label="First">
                            <span aria-hidden="true">&laquo; first</span>
-                        </a>
-                  </li>
-                  <li class="page-item">
-                        <a class="page-link" href="?page={{ list.previous_page_number }}#reservation" aria-label="Previous">
+                       </a>
+                   </li>
+                   <li class="page-item">
+                       <a class="page-link" href="?page={{ list.previous_page_number }}#reservation" style="color: #5cb85c;" aria-label="Previous">
                            <span aria-hidden="true">previous</span>
-                        </a>
-                  </li>
-               {% else %}
-                  <li class="page-item disabled">
-                        <a class="page-link" aria-label="First">
+                       </a>
+                   </li>
+                   {% else %}
+                   <li class="page-item disabled">
+                       <a class="page-link" aria-label="First">
                            <span aria-hidden="true">&laquo; first</span>
-                        </a>
-                  </li>
-                  <li class="page-item disabled">
-                        <a class="page-link" aria-label="Previous">
+                       </a>
+                   </li>
+                   <li class="page-item disabled">
+                       <a class="page-link" aria-label="Previous">
                            <span aria-hidden="true">previous</span>
-                        </a>
-                  </li>
-               {% endif %}
-      
-               <!-- Range of page numbers -->
-               {% for i in list.paginator.page_range %}
-                  {% if list.number == i %}
-                        <li class="page-item active" aria-current="page">
-                           <a class="page-link" href="#">{{ i }}</a>
-                        </li>
-                  {% elif i > list.number|add:'-3' and i < list.number|add:'3' %}
-                        <li class="page-item">
-                           <a class="page-link" href="?page={{ i }}#reservation">{{ i }}</a>
-                        </li>
-                  {% endif %}
-               {% endfor %}
-      
-               {% if list.has_next %}
-                  <li class="page-item">
-                        <a class="page-link" href="?page={{ list.next_page_number }}#reservation" aria-label="Next">
+                       </a>
+                   </li>
+                   {% endif %}
+
+                   <!-- Range of page numbers -->
+                   {% for i in list.paginator.page_range %}
+                   {% if list.number == i %}
+                   <li class="page-item active" aria-current="page">
+                       <a class="page-link" href="#" style="background-color: #28a745; border-color: #73c273;">{{ i }}</a>
+                   </li>
+                   {% elif i > list.number|add:'-3' and i < list.number|add:'3' %}
+                   <li class="page-item">
+                       <a class="page-link" style="color: #5cb85c;" href="?page={{ i }}#reservation" >{{ i }}</a>
+                   </li>
+                   {% endif %}
+                   {% endfor %}
+
+                   {% if list.has_next %}
+                   <li class="page-item">
+                       <a class="page-link" href="?page={{ list.next_page_number }}#reservation" style="color: #5cb85c;" aria-label="Next">
                            <span aria-hidden="true">next</span>
-                        </a>
-                  </li>
-                  <li class="page-item">
-                        <a class="page-link" href="?page={{ list.paginator.num_pages }}#reservation" aria-label="Last">
+                       </a>
+                   </li>
+                   <li class="page-item">
+                       <a class="page-link" href="?page={{ list.paginator.num_pages }}#reservation" style="color: #5cb85c;" aria-label="Last">
                            <span aria-hidden="true">last &raquo;</span>
-                        </a>
-                  </li>
-               {% else %}
-                  <li class="page-item disabled">
-                        <a class="page-link" aria-label="Next">
+                       </a>
+                   </li>
+                   {% else %}
+                   <li class="page-item disabled">
+                       <a class="page-link" aria-label="Next">
                            <span aria-hidden="true">next</span>
-                        </a>
-                  </li>
-                  <li class="page-item disabled">
-                        <a class="page-link" aria-label="Last">
+                       </a>
+                   </li>
+                   <li class="page-item disabled">
+                       <a class="page-link" aria-label="Last">
                            <span aria-hidden="true">last &raquo;</span>
-                        </a>
-                  </li>
-               {% endif %}
-            </ul>
-      </nav> 
+                       </a>
+                   </li>
+                   {% endif %}
+               </ul>
+           </nav>
        </div>
-    </div>
- </div>
+   </div>
+</div>
+
+ <style>
+      /* General table styling */
+      .custom-table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 20px;
+      font-size: 1rem;
+      color: #333;
+      background-color: #fff;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+   }
+
+   /* Header styling */
+   .custom-table thead th {
+      text-align: left;
+      padding: 12px 15px;
+      background-color: #164006; /* Dark green */
+      color: #ffffff;
+      font-weight: bold;
+      text-transform: uppercase;
+   }
+
+   /* Table body styling */
+   .custom-table tbody tr {
+      border-bottom: 1px solid #ddd;
+      transition: background-color 0.2s ease, box-shadow 0.2s ease;
+   }
+
+   .custom-table tbody tr:nth-child(even) {
+      background-color: #f9f9f9; /* Light zebra striping */
+   }
+
+   .custom-table tbody tr:hover {
+      background-color: #f1f5e6; /* Light green */
+      box-shadow: inset 0 0 10px rgb(93, 223, 93);
+   }
+
+   /* Cell styling */
+   .custom-table tbody td {
+      padding: 12px 15px;
+      vertical-align: middle;
+   }
+ </style>
 {% endblock %}

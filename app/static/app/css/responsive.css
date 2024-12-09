@@ -176,7 +176,7 @@
     .ipsum_text {
         width: 100%;
     }
-    #my_slider a.carousel-control-prev {
+    /* #my_slider a.carousel-control-prev {
         position: absolute;
         left: 200px;
         top: 83%;
@@ -185,11 +185,11 @@
         position: absolute;
         right: 200px;
         top: 83%;
-    }
+    } */
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
-    #main_slider a.carousel-control-prev {
+    /* #main_slider a.carousel-control-prev {
         position: absolute;
         left: 175px;
         top: 90%;
@@ -200,7 +200,7 @@
         left: 236px;
         top: 90%;
         display: none;
-    }
+    } */
     .navbar-expand-lg .navbar-nav {
         display: block;
     }
@@ -318,7 +318,7 @@
     .client_section_2 {
         padding-top: 50px;
     }
-    #my_slider a.carousel-control-prev {
+    /* #my_slider a.carousel-control-prev {
         position: absolute;
         left: 130px;
         top: 83%;
@@ -327,7 +327,7 @@
         position: absolute;
         right: 130px;
         top: 83%;
-    }
+    } */
     .contact_text {
         font-size: 30px;
     }
@@ -352,7 +352,7 @@
 }
 
 @media (min-width: 576px) and (max-width: 767px) {
-    #main_slider a.carousel-control-prev {
+    /* #main_slider a.carousel-control-prev {
         position: absolute;
         left: 175px;
         top: 90%;
@@ -363,7 +363,7 @@
         left: 236px;
         top: 90%;
         display: none;
-    }
+    } */
     .navbar-expand-lg .navbar-nav {
         display: block;
     }
@@ -475,12 +475,12 @@
     .mail_main {
         padding: 40px 0px 40px 0px;
     }
-    .footer_section {
+    /* .footer_section {
         padding-top: 60px;
-    }
-    .useful_text {
+    } */
+    /* .useful_text {
         padding-top: 30px;
-    }
+    } */
     .image_9 {
         width: 100%;
         float: left;
@@ -488,7 +488,7 @@
 }
 
 @media (max-width: 575px) {
-    #main_slider a.carousel-control-prev {
+    /* #main_slider a.carousel-control-prev {
         position: absolute;
         left: 175px;
         top: 90%;
@@ -499,7 +499,7 @@
         left: 236px;
         top: 90%;
         display: none;
-    }
+    } */
     .navbar-expand-lg .navbar-nav {
         display: block;
     }
